@@ -1,13 +1,26 @@
 import { Course, Schedule, DayOfWeek } from "@/types/data";
 
-type RawCourseItem = {
-  SBJ_NO: string;
-  SBJ_NM: string;
-  DVCLS: string;
-  TCHR_DSC: string;
-  ROOM_DSC: string;
-  TMTBL_DSC: string;
-  // 기타 필드 생략
+export type RawCourseItem = {
+  SBJ_NO: string,
+  SBJ_NM: string,
+  CPDIV_CD: string | null,
+  DNN_CD: string | null,
+  ALL_FULL_PCNT: number | null,
+  SBJ_DIV: string | null,
+  OPEN_SEM_CD: string | null,
+  TMTBL_DSC: string | null,
+  DETL_CURI_CD: string | null,
+  OPEN_DPTMJR_CD_NM: string | null,
+  CDT: string | null,
+  OPEN_ORGN_CLSF_CD: string | null,
+  ROOM_DSC: string | null,
+  OPEN_YY: string | null,
+  SCHGRD: string | null,
+  REMK: string | null,
+  OPEN_DPTMJR_CD: string | null,
+  TCHR_DSC: string | null,
+  DVCLS: string | null,
+  TKCRS_PCNT: number,
 };
 
 const dayMap: Record<string, DayOfWeek> = {
@@ -51,42 +64,42 @@ function parseSchedule(timetable: string): Schedule[] {
   return schedules;
 }
 
-function parseRawCourse(raw: RawCourseItem): Course {
+export function parseRawCourse(raw: RawCourseItem): Course {
   return {
     id: `${raw.SBJ_NO}-${raw.DVCLS}`,
     sbjNo: raw.SBJ_NO,
     sbjName: raw.SBJ_NM,
     instructor: raw.TCHR_DSC || '',
     location: raw.ROOM_DSC || '',
-    timeSlots: parseSchedule(raw.TMTBL_DSC),
+    timeSlots: parseSchedule(raw.TMTBL_DSC ?? ""),
   };
 }
 
 // 사용 예시
-const rawData = [
-  {
-    SBJ_NO: "BIS2001",
-    SBJ_NM: "불교학입문",
-    CPDIV_CD: "전공",
-    DNN_CD: "주간",
-    ALL_FULL_PCNT: 50,
-    SBJ_DIV: null,
-    OPEN_SEM_CD: "CM160.10",
-    TMTBL_DSC: "월, 수 4교시(12:00) ~ 5교시(13:30)",
-    DETL_CURI_CD: "기초",
-    OPEN_DPTMJR_CD_NM: "불교대학 불교학부",
-    CDT: "3.0",
-    OPEN_ORGN_CLSF_CD: "CM015.110",
-    ROOM_DSC: "B259(법학/만해관 303-201 강의실_스마트)",
-    OPEN_YY: "2025",
-    SCHGRD: "1학년",
-    REMK: "팀티칭",
-    OPEN_DPTMJR_CD: "DS031201",
-    TCHR_DSC: "신성현",
-    DVCLS: "01",
-    TKCRS_PCNT: 6
-  },
-];
+// const rawData = [
+//   {
+//     SBJ_NO: "BIS2001",
+//     SBJ_NM: "불교학입문",
+//     CPDIV_CD: "전공",
+//     DNN_CD: "주간",
+//     ALL_FULL_PCNT: 50,
+//     SBJ_DIV: null,
+//     OPEN_SEM_CD: "CM160.10",
+//     TMTBL_DSC: "월, 수 4교시(12:00) ~ 5교시(13:30)",
+//     DETL_CURI_CD: "기초",
+//     OPEN_DPTMJR_CD_NM: "불교대학 불교학부",
+//     CDT: "3.0",
+//     OPEN_ORGN_CLSF_CD: "CM015.110",
+//     ROOM_DSC: "B259(법학/만해관 303-201 강의실_스마트)",
+//     OPEN_YY: "2025",
+//     SCHGRD: "1학년",
+//     REMK: "팀티칭",
+//     OPEN_DPTMJR_CD: "DS031201",
+//     TCHR_DSC: "신성현",
+//     DVCLS: "01",
+//     TKCRS_PCNT: 6
+//   },
+// ];
 
-const courses: Course[] = rawData.map(parseRawCourse);
-console.dir(courses, { depth: null, colors: true });
+// const courses: Course[] = rawData.map(parseRawCourse);
+// console.dir(courses, { depth: null, colors: true });
