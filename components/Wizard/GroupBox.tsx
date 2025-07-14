@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Trash2, PlusCircle } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { formatTime } from '@/lib/format-time';
 import { Course } from '@/types/data';
 import { useCourses } from '@/hooks/useCourses';
@@ -26,28 +26,6 @@ interface GroupBoxProps {
 function GroupBox ({ groupId, groupIndex, removeGroup }: GroupBoxProps) {
   const allCourses = useCourses();
   const [courses, setCourses] = useState<Course[]>([]);
-
-  const addCourse = () => {
-    setCourses([
-      ...courses,
-      {
-        id: Date.now().toString(),
-        sbjNo: 'CS101',
-        sbjName: '새 과목',
-        instructor: '교수님',
-        location: '장소',
-        timeSlots: [
-          {
-            day: '월',
-            startMinutes: 540, // 9:00 AM
-            endMinutes: 600,   // 10:00 AM
-            periodStart: '1교시',
-            periodEnd: '2교시',
-          },
-        ],
-      },
-    ]);
-  };
 
   const removeCourse = (courseId: string) => {
     setCourses(courses.filter((course) => course.id !== courseId));
@@ -86,14 +64,14 @@ function GroupBox ({ groupId, groupIndex, removeGroup }: GroupBoxProps) {
               {courses.map((course) => (
                 <TableRow key={course.id}>
                 <TableCell>{course.sbjNo}</TableCell>
-                <TableCell>{course.sbjName}</TableCell>
+                <TableCell className='whitespace-pre-wrap'>{course.sbjName}</TableCell>
                 <TableCell>{course.instructor}</TableCell>
-                <TableCell>
+                <TableCell className='whitespace-pre-wrap'>
                   {course.timeSlots.map(slot =>
                     `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`
                   ).join(", ")}
                 </TableCell>
-                <TableCell className="hidden md:table-cell">{course.location}</TableCell>
+                <TableCell className="hidden md:table-cell whitespace-pre-wrap">{course.location}</TableCell>
                   <TableCell className="text-center">
                     <Button
                       variant="ghost"

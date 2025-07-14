@@ -4,7 +4,14 @@ import { Course } from '@/types/data';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { formatTime } from '@/lib/format-time';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { 
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+ } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
 interface Props {
@@ -26,14 +33,18 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
           과목 추가
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[80vh] overflow-auto">
+      <DialogContent className="overflow-auto">
+        <DialogHeader>
+          <DialogTitle>과목 검색</DialogTitle>
+          <DialogDescription>추가할 과목을 검색하세요.</DialogDescription>
+        </DialogHeader>
         <Input
           placeholder="과목명, 교수명, 학수번호로 검색"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="mb-4"
+          className="mt-4"
         />
-        <ul className="space-y-2">
+        <ul className="space-y-2 h-[70vh]">
           {filtered.slice(0, 20).map((course) => (
             <li
               key={course.id}
