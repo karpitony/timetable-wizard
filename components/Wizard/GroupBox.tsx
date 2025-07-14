@@ -1,14 +1,17 @@
 'use client';
-import { useState } from "react";
 
-interface Course {
-  id: string;
-  code: string;
-  name: string;
-  instructor: string;
-  time: string;
-  location: string;
-}
+import { useState } from 'react';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+import { Trash2, PlusCircle } from 'lucide-react';
+import { Course } from '@/types/data';
+// import { GroupData } from '@/types/group';
 
 interface GroupBoxProps {
   groupId: string;
@@ -16,20 +19,33 @@ interface GroupBoxProps {
   removeGroup: (groupId: string) => void;
 }
 
-const GroupBox = ({ groupId, groupIndex, removeGroup }: GroupBoxProps) => {
+function formatTime(minutes: number): string {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
+}
+
+function GroupBox ({ groupId, groupIndex, removeGroup }: GroupBoxProps) {
   const [courses, setCourses] = useState<Course[]>([]);
 
   const addCourse = () => {
     setCourses([
       ...courses,
       {
-        // 임시 데이터
         id: Date.now().toString(),
-        code: "CS101", 
-        name: "새 과목",
-        instructor: "교수님",
-        time: "시간",
-        location: "장소",
+        sbjNo: 'CS101',
+        sbjName: '새 과목',
+        instructor: '교수님',
+        location: '장소',
+        timeSlots: [
+          {
+            day: '월',
+            startMinutes: 540, // 9:00 AM
+            endMinutes: 600,   // 10:00 AM
+            periodStart: '1교시',
+            periodEnd: '2교시',
+          },
+        ],
       },
     ]);
   };
@@ -39,58 +55,75 @@ const GroupBox = ({ groupId, groupIndex, removeGroup }: GroupBoxProps) => {
   };
 
   return (
-    <div className="border rounded p-4 mb-4 bg-white shadow-sm">
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="text-lg font-bold text-orange-500">그룹 {groupIndex + 1}</h2>
-        <button
-          className="text-orange-500"
+    <Card className="mb-6 shadow-lg">
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <CardTitle className="text-orange-500 text-lg">
+          그룹 {groupIndex + 1}
+        </CardTitle>
+        <Button
+          variant="ghost"
+          className="text-orange-500 hover:text-red-500"
           onClick={() => removeGroup(groupId)}
         >
+          <Trash2 size={18} className="mr-1" />
           삭제
-        </button>
-      </div>
+        </Button>
+      </CardHeader>
 
-      <table className="w-full border-collapse text-sm mb-2 text-left">
-        <thead>
-          <tr>
-            <th className="border px-2 py-1">학수번호</th>
-            <th className="border px-2 py-1">과목명</th>
-            <th className="border px-1 py-1 w-24">교수명</th>
-            <th className="border px-2 py-1">시간</th>
-            <th className="border px-2 py-1 hidden md:block">장소</th>
-            <th className="border px-1 py-1 w-10">삭제</th>
-          </tr>
-        </thead>
-        <tbody>
-          {courses.map((course) => (
-            <tr key={course.id}>
-              <td className="border px-2 py-1">{course.code}</td>
-              <td className="border px-2 py-1">{course.name}</td>
-              <td className="border px-1 py-1 w-24">{course.instructor}</td>
-              <td className="border px-2 py-1">{course.time}</td>
-              <td className="border px-2 py-1 hidden md:block">{course.location}</td>
-              <td className="border px-1 py-1 w-10 text-center">
-                <button
-                  className="text-orange-500"
-                  onClick={() => removeCourse(course.id)}
-                >
-                  ×
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <CardContent>
+        {courses.length > 0 ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>학수번호</TableHead>
+                <TableHead>과목명</TableHead>
+                <TableHead className="w-[100px]">교수명</TableHead>
+                <TableHead>시간</TableHead>
+                <TableHead className="hidden md:table-cell">장소</TableHead>
+                <TableHead className="w-[40px] text-center">삭제</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {courses.map((course) => (
+                <TableRow key={course.id}>
+                <TableCell>{course.sbjNo}</TableCell>
+                <TableCell>{course.sbjName}</TableCell>
+                <TableCell>{course.instructor}</TableCell>
+                <TableCell>
+                  {course.timeSlots.map(slot =>
+                    `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`
+                  ).join(", ")}
+                </TableCell>
+                <TableCell className="hidden md:table-cell">{course.location}</TableCell>
+                  <TableCell className="text-center">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-orange-500 hover:text-red-500"
+                      onClick={() => removeCourse(course.id)}
+                    >
+                      ×
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <p className="text-sm text-gray-500 text-center py-4">과목이 없습니다.</p>
+        )}
 
-      <div className="flex justify-center">
-        <button
-          className="bg-orange-500 text-white px-4 py-2 rounded w-1/2 font-bold"
-          onClick={addCourse}
-        >
-          과목 추가
-        </button>
-      </div>
-    </div>
+        <div className="flex justify-center mt-4">
+          <Button
+            className="w-full md:w-1/2 bg-orange-500 hover:bg-orange-600"
+            onClick={addCourse}
+          >
+            <PlusCircle size={16} className="mr-2" />
+            과목 추가
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
