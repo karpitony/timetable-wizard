@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from '@next/third-parties/google';
 import "./globals.css";
 import Header from "@/components/Header";
 
@@ -24,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -32,6 +34,8 @@ export default function RootLayout({
         <main>
           {children}
         </main>
+        <Analytics />
+        <GoogleAnalytics gaId="G-SMCK1FSKR3" />
       </body>
     </html>
   );
