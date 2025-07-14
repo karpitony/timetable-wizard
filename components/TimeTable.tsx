@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Course } from "@/types/data";
 import TimetableWithSave from "./Wizard/TimetableWithSave";
 
@@ -8,7 +8,33 @@ interface TimetableProps {
   courses: Course[];
 };
 
+const COLORS = [
+  'bg-orange-100 border-orange-300', 'bg-blue-100 border-blue-300',
+  'bg-green-100 border-green-300', 'bg-purple-100 border-purple-300',
+  'bg-pink-100 border-pink-300', 'bg-yellow-100 border-yellow-300',
+  'bg-red-100 border-red-300', 'bg-teal-100 border-teal-300',
+  'bg-gray-100 border-gray-300', 'bg-indigo-100 border-indigo-300',
+  'bg-lime-100 border-lime-300', 'bg-cyan-100 border-cyan-300',
+  'bg-amber-100 border-amber-300',
+];
+
 function Timetable({ courses }: TimetableProps) {
+  const [colorMap, setColorMap] = useState<Map<string, string>>(new Map());
+
+  const assignColor = (id: string) => {
+    if (colorMap.has(id)) return colorMap.get(id)!;
+    const usedColors = new Set(colorMap.values());
+    const availableColors = COLORS.filter(c => !usedColors.has(c));
+
+    if (availableColors.length === 0) {
+      return COLORS[0];
+    }
+
+    const color = availableColors[0];
+    setColorMap(new Map(colorMap).set(id, color));
+    return color;
+  };
+
 
   const { startHour, endHour } = useMemo(() => {
     if (!courses || courses.length === 0) {
@@ -42,22 +68,6 @@ function Timetable({ courses }: TimetableProps) {
 
   const skipCells = new Set<string>();
   const intervals = Array.from({ length: (endHour - startHour) * 2 }, (_, i) => startHour * 60 + i * 30);
-  
-  // 강의 ID에 따라 색상을 다르게 지정하는 함수
-  const getColor = (id: string) => {
-    const colors = [
-      'bg-orange-100 border-orange-300', 'bg-blue-100 border-blue-300', 
-      'bg-green-100 border-green-300', 'bg-purple-100 border-purple-300',
-      'bg-pink-100 border-pink-300', 'bg-yellow-100 border-yellow-300',
-      'bg-red-100 border-red-300', 'bg-teal-100 border-teal-300',
-    ];
-    let hash = 0;
-    for (let i = 0; i < id.length; i++) {
-      hash = id.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const index = Math.abs(hash) % colors.length;
-    return colors[index];
-  };
 
   // 강의가 시작하는 시간을 추적하여, 해당 시간에만 셀을 렌더링하도록 합니다.
   const courseStartsAt = new Map<string, Course>();
@@ -131,7 +141,7 @@ function Timetable({ courses }: TimetableProps) {
                     return (
                       <td
                         key={colIdx}
-                        className={`h-10 border-1 border-gray-300 p-2 relative text-xs align-top ${getColor(course.id)}`}
+                        className={`h-10 border-1 border-gray-300 p-2 relative text-xs align-top ${assignColor(course.id)}`}
                         rowSpan={rowspanValue}
                       >
                         <div className="font-semibold">{course.sbjNo}</div>
