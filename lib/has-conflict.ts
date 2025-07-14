@@ -12,6 +12,17 @@ export function hasConflict(a: Schedule[], b: Schedule[]): boolean {
   return false;
 }
 
+export function hasAnyConflict(courses: Schedule[][]): boolean {
+  for (let i = 0; i < courses.length; i++) {
+    for (let j = i + 1; j < courses.length; j++) {
+      if (hasConflict(courses[i], courses[j])) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 
 /** 예시 테스트 */
 const slotsA: Schedule[] = [

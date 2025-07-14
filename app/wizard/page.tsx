@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import GroupBox from "@/components/Wizard/GroupBox";
 import { GroupData } from '@/types/group';
 import { Course } from '@/types/data';
@@ -69,12 +70,12 @@ const Wizard = () => {
           >
             그룹 추가
           </button>
-          <button
+          <Link
             className="bg-blue-500 text-white px-4 py-2 rounded w-full md:w-auto"
-            onClick={() => alert("저장 기능은 아직 구현되지 않았습니다.")}
+            href="/wizard/result"
           >
             시간표 만들기
-          </button>
+          </Link>
         </div>
       </div>
     </section>
