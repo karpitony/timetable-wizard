@@ -10,7 +10,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Trash2, PlusCircle } from 'lucide-react';
+import { formatTime } from '@/lib/format-time';
 import { Course } from '@/types/data';
+import { useCourses } from '@/hooks/useCourses';
+import CourseSearchModal from '@/components/Wizard/CourseSearchModal';
+
 // import { GroupData } from '@/types/group';
 
 interface GroupBoxProps {
@@ -19,13 +23,8 @@ interface GroupBoxProps {
   removeGroup: (groupId: string) => void;
 }
 
-function formatTime(minutes: number): string {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
-}
-
 function GroupBox ({ groupId, groupIndex, removeGroup }: GroupBoxProps) {
+  const allCourses = useCourses();
   const [courses, setCourses] = useState<Course[]>([]);
 
   const addCourse = () => {
@@ -114,13 +113,10 @@ function GroupBox ({ groupId, groupIndex, removeGroup }: GroupBoxProps) {
         )}
 
         <div className="flex justify-center mt-4">
-          <Button
-            className="w-full md:w-1/2 bg-orange-500 hover:bg-orange-600"
-            onClick={addCourse}
-          >
-            <PlusCircle size={16} className="mr-2" />
-            과목 추가
-          </Button>
+          <CourseSearchModal
+            allCourses={allCourses}
+            onSelect={(course) => setCourses([...courses, course])}
+          />
         </div>
       </CardContent>
     </Card>
