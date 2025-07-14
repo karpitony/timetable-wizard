@@ -1,6 +1,3 @@
-'use client';
-
-import { useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -12,23 +9,36 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Trash2 } from 'lucide-react';
 import { formatTime } from '@/lib/format-time';
 import { Course } from '@/types/data';
+import { GroupData } from '@/types/group';
 import { useCourses } from '@/hooks/useCourses';
 import CourseSearchModal from '@/components/Wizard/CourseSearchModal';
 
-// import { GroupData } from '@/types/group';
 
 interface GroupBoxProps {
-  groupId: string;
+  group: GroupData;
   groupIndex: number;
   removeGroup: (groupId: string) => void;
+  updateGroupCourses: (groupId: string, newCourses: Course[]) => void;
 }
 
-function GroupBox ({ groupId, groupIndex, removeGroup }: GroupBoxProps) {
+function GroupBox ({ 
+  group,
+  groupIndex,
+  removeGroup,
+  updateGroupCourses
+}: GroupBoxProps) {
   const allCourses = useCourses();
-  const [courses, setCourses] = useState<Course[]>([]);
+  const courses = group.data || [];
+
+  const addCourse = (course: Course) => {
+    if (courses.find(c => c.id === course.id)) return;
+    const updated = [...courses, course];
+    updateGroupCourses(group.id, updated);
+  };
 
   const removeCourse = (courseId: string) => {
-    setCourses(courses.filter((course) => course.id !== courseId));
+    const updated = courses.filter(course => course.id !== courseId);
+    updateGroupCourses(group.id, updated);
   };
 
   return (
@@ -40,7 +50,7 @@ function GroupBox ({ groupId, groupIndex, removeGroup }: GroupBoxProps) {
         <Button
           variant="ghost"
           className="text-orange-500 hover:text-red-500"
-          onClick={() => removeGroup(groupId)}
+          onClick={() => removeGroup(group.id)}
         >
           <Trash2 size={18} className="mr-1" />
           삭제
@@ -93,7 +103,7 @@ function GroupBox ({ groupId, groupIndex, removeGroup }: GroupBoxProps) {
         <div className="flex justify-center mt-4">
           <CourseSearchModal
             allCourses={allCourses}
-            onSelect={(course) => setCourses([...courses, course])}
+            onSelect={addCourse}
           />
         </div>
       </CardContent>
