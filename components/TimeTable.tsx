@@ -31,7 +31,15 @@ function Timetable({ courses }: TimetableProps) {
     return { startHour, endHour };
   }, [courses]);
 
-  const days = ["월", "화", "수", "목", "금", "토"];
+  const baseDays = ["월", "화", "수", "목", "금"];
+  const includeSaturday = useMemo(() => {
+    return courses.some(course =>
+      course.timeSlots.some(slot => slot.day === "토")
+    );
+  }, [courses]);
+  const days = includeSaturday ? [...baseDays, "토"] : baseDays;
+
+
   const skipCells = new Set<string>();
   const intervals = Array.from({ length: (endHour - startHour) * 2 }, (_, i) => startHour * 60 + i * 30);
   

@@ -9,6 +9,7 @@ import CourseTable from "@/components/Wizard/CourseTable";
 import { useCourses } from '@/hooks/useCourses';
 import { Course } from "@/types/data";
 import { hasAnyConflict } from "@/lib/has-conflict";
+import { Trash2Icon } from "lucide-react";
 
 export default function TimetablePage() {
   const [timetables, setTimetables] = useState<TimetableData[]>([]);
@@ -67,7 +68,7 @@ export default function TimetablePage() {
             {timetables.map((tt) => (
               <li key={tt.id} className="flex justify-between items-center py-2 border-b">
                 <button
-                  className="text-blue-600 underline"
+                  className="text-blue-600 underline text-xl"
                   onClick={() => setSelected(tt)}
                 >
                   {tt.id}
@@ -76,7 +77,7 @@ export default function TimetablePage() {
                   className="text-red-600"
                   onClick={() => handleDelete(tt.id)}
                 >
-                  삭제
+                  <Trash2Icon />
                 </button>
               </li>
             ))}

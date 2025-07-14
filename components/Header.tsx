@@ -1,8 +1,12 @@
 'use client';
 
 import Link from "next/link";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export default function Header() {
+  const [open, setOpen] = useState(false);
+
   return (
     <header className="w-full border-b bg-background text-foreground">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
@@ -12,29 +16,41 @@ export default function Header() {
           <span className="text-sm text-orange-500 font-medium">beta</span>
         </Link>
 
-        {/* 우측: CTA 버튼 */}
-        <nav className="flex gap-4">
-          <Link 
-            href="/"
-            className="text-base font-medium hover:bg-gray-200 px-3 py-2 rounded-md transition-colors"
-          >
-            홈
-          </Link>
-          <Link 
-            href="/wizard"
-            className="text-base font-medium hover:bg-gray-200 px-3 py-2 rounded-md transition-colors"
-          >
-            마법사 시작
-          </Link>
-          <Link 
-            href="/timetable"
-            className="text-base font-medium hover:bg-gray-200 px-3 py-2 rounded-md transition-colors"
-          >
-            내 시간표 보기
-          </Link>
-        </nav>
+        {/* 모바일 메뉴 버튼 */}
+        <button
+          className="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-ring"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
+        {/* 데스크탑 네비게이션 */}
+        <nav className="hidden md:flex gap-4">
+          <NavLink href="/" text="홈" />
+          <NavLink href="/wizard" text="마법사 시작" />
+          <NavLink href="/timetable" text="내 시간표 보기" />
+        </nav>
       </div>
+
+      {/* 모바일 드롭다운 메뉴 */}
+      {open && (
+        <nav className="md:hidden flex flex-col gap-2 px-4 pb-4">
+          <NavLink href="/" text="홈" />
+          <NavLink href="/wizard" text="마법사 시작" />
+          <NavLink href="/timetable" text="내 시간표 보기" />
+        </nav>
+      )}
     </header>
+  );
+}
+
+function NavLink({ href, text }: { href: string; text: string }) {
+  return (
+    <Link
+      href={href}
+      className="text-base font-medium hover:bg-gray-200 px-3 py-2 rounded-md transition-colors"
+    >
+      {text}
+    </Link>
   );
 }

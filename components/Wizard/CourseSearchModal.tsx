@@ -44,7 +44,7 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
           onChange={(e) => setQuery(e.target.value)}
           className="mt-4"
         />
-        <ul className="space-y-2 h-[70vh]">
+        <ul className="space-y-2 h-[50vh] md:h-[70vh]">
           {filtered.slice(0, 20).map((course) => (
             <li
               key={course.id}

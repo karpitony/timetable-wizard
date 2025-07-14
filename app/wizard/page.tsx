@@ -63,15 +63,15 @@ const Wizard = () => {
           />
         ))}
 
-        <div className="mt-4 flex justify-between items-center">
+        <div className="mt-4 flex justify-between items-center px-10">
           <button
-            className="bg-orange-500 text-white px-4 py-2 rounded w-full md:w-auto"
+            className="bg-orange-500 text-white px-4 py-2 rounded font-bold hover:bg-orange-400 transition-colors"
             onClick={addGroup}
           >
             그룹 추가
           </button>
           <Link
-            className="bg-blue-500 text-white px-4 py-2 rounded w-full md:w-auto"
+            className="bg-blue-500 text-white px-4 py-2 rounded font-bold hover:bg-blue-400 transition-colors"
             href="/wizard/result"
           >
             시간표 만들기
