@@ -5,9 +5,12 @@ import { useTimetables } from "@/hooks/useTimetables";
 import { getAllGroups } from "@/lib/indexed-db-model";
 import Timetable from "@/components/TimeTable";
 
+const PAGE_SIZE = 10;
+
 export default function ResultPage() {
   const { generate, timetables, isLoading, error } = useTimetables();
   const [loadingMessage, setLoadingMessage] = useState("");
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -17,6 +20,13 @@ export default function ResultPage() {
       setLoadingMessage("");
     })();
   }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [page]);
+
+  const pageCount = Math.ceil(timetables.length / PAGE_SIZE);
+  const currentPageItems = timetables.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   return (
     <div className="p-4 min-h-screen max-w-3xl mx-auto">
@@ -32,13 +42,32 @@ export default function ResultPage() {
             공강, 늦게 시작, 일찍 끝나는 경우 가산점이 부과되어 앞에 표시됩니다.
           </p>
 
-          {timetables.map((result, idx) => (
+          {currentPageItems.map((result, idx) => (
             <div key={idx} className="mb-10">
-              <h3 className="text-xl font-semibold mb-2">시간표 {idx + 1} (점수: {result.score})</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                시간표 {page * PAGE_SIZE + idx + 1} (점수: {result.score})
+              </h3>
               <Timetable courses={result.timetable} />
-              {/* 혹은 과목 목록 테이블도 함께 보여줄 수 있음 */}
             </div>
           ))}
+
+          <div className="flex justify-center gap-2 mt-6">
+            <button
+              onClick={() => setPage(p => Math.max(p - 1, 0))}
+              disabled={page === 0}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              이전
+            </button>
+            <span className="px-3 py-1">{page + 1} / {pageCount}</span>
+            <button
+              onClick={() => setPage(p => Math.min(p + 1, pageCount - 1))}
+              disabled={page === pageCount - 1}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              다음
+            </button>
+          </div>
         </>
       )}
     </div>

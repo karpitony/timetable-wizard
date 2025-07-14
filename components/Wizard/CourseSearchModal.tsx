@@ -1,18 +1,19 @@
-// components/CourseSearchModal.tsx
 'use client';
+
 import { Course } from '@/types/data';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { formatTime } from '@/lib/format-time';
-import { 
+import {
   Dialog,
   DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
- } from '@/components/ui/dialog';
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { useVirtualizer } from '@tanstack/react-virtual';
 
 interface Props {
   allCourses: Course[];
@@ -26,6 +27,15 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
     c.sbjName.includes(query) || c.instructor.includes(query) || c.sbjNo.includes(query)
   );
 
+  const parentRef = useRef<HTMLUListElement>(null);
+
+  const rowVirtualizer = useVirtualizer({
+    count: filtered.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 72, // 각 item 높이 추정값 (px)
+    overscan: 10,
+  });
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -38,31 +48,51 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
           <DialogTitle>과목 검색</DialogTitle>
           <DialogDescription>추가할 과목을 검색하세요.</DialogDescription>
         </DialogHeader>
+
         <Input
           placeholder="과목명, 교수명, 학수번호로 검색"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="mt-4"
         />
-        <ul className="space-y-2 h-[50vh] md:h-[70vh]">
-          {filtered.map((course) => (
-            <li
-              key={course.id}
-              className="cursor-pointer p-2 border rounded hover:bg-gray-100"
-              onClick={() => onSelect(course)}
-            >
-              <div className="font-medium">{course.sbjName} ({course.id})</div>
-              <div className="text-sm text-muted-foreground">
-                {course.instructor} | {course.timeSlots.map(slot =>
-                  `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`
-                ).join(", ")}
-              </div>
-            </li>
-          ))}
+
+        <ul
+          ref={parentRef}
+          className="relative h-[50vh] md:h-[70vh] overflow-auto"
+        >
+          <div style={{ height: rowVirtualizer.getTotalSize(), position: 'relative' }}>
+            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+              const course = filtered[virtualRow.index];
+
+              return (
+                <li
+                  key={course.id}
+                  onClick={() => onSelect(course)}
+                  className="absolute left-0 right-0 cursor-pointer p-2 border rounded hover:bg-gray-100"
+                  style={{
+                    top: 0,
+                    transform: `translateY(${virtualRow.start}px)`,
+                    height: `${virtualRow.size}px`,
+                  }}
+                >
+                  <div className="font-medium">
+                    {course.sbjName} ({course.id})
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {course.instructor} |{' '}
+                    {course.timeSlots
+                      .map(
+                        (slot) =>
+                          `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`
+                      )
+                      .join(', ')}
+                  </div>
+                </li>
+              );
+            })}
+          </div>
         </ul>
       </DialogContent>
     </Dialog>
   );
 }
-
-
