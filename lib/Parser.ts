@@ -36,30 +36,29 @@ function parseSchedule(timetable: string): Schedule[] {
   const schedules: Schedule[] = [];
   if (!timetable) return schedules;
 
-  // 1. 요일 추출
-  const dayMatches = timetable.match(/[월화수목금토]/g);
-  if (!dayMatches) return schedules;
+  // 시간 구간이 포함된 패턴 전체 추출
+  const pattern = /((?:[월화수목금토],?\s*)+)\s*(\d+(?:\.\d+)?)교시\((\d{1,2}:\d{2})\)\s*~\s*(\d+(?:\.\d+)?)교시\((\d{1,2}:\d{2})\)/g;
+  const matches = [...timetable.matchAll(pattern)];
 
-  // 2. 시간 추출
-  const timeRegex = /(\d+(?:\.\d+)?)교시\((\d{1,2}:\d{2})\)\s*~\s*(\d+(?:\.\d+)?)교시\((\d{1,2}:\d{2})\)/;
-  const timeMatch = timetable.match(timeRegex);
+  for (const match of matches) {
+    const [, dayStr, periodStart, startTime, periodEnd, endTime] = match;
 
-  if (!timeMatch) return schedules; // 시간 정보 없으면 빈 배열 리턴
+    // 쉼표로 나눠 복수 요일 추출
+    const days = dayStr.split(/,\s*/).map(d => d.trim()).filter(Boolean);
 
-  const [, periodStart, startTime, periodEnd, endTime] = timeMatch;
+    for (const day of days) {
+      const dayOfWeek = dayMap[day];
+      if (!dayOfWeek) continue;
 
-  dayMatches.forEach((day) => {
-    const dayOfWeek = dayMap[day];
-    if (!dayOfWeek) return;
-
-    schedules.push({
-      day: dayOfWeek,
-      startMinutes: toMinutes(startTime),
-      endMinutes: toMinutes(endTime),
-      periodStart,
-      periodEnd,
-    });
-  });
+      schedules.push({
+        day: dayOfWeek,
+        startMinutes: toMinutes(startTime),
+        endMinutes: toMinutes(endTime),
+        periodStart,
+        periodEnd,
+      });
+    }
+  }
 
   return schedules;
 }
@@ -75,31 +74,15 @@ export function parseRawCourse(raw: RawCourseItem): Course {
   };
 }
 
-// 사용 예시
-// const rawData = [
-//   {
-//     SBJ_NO: "BIS2001",
-//     SBJ_NM: "불교학입문",
-//     CPDIV_CD: "전공",
-//     DNN_CD: "주간",
-//     ALL_FULL_PCNT: 50,
-//     SBJ_DIV: null,
-//     OPEN_SEM_CD: "CM160.10",
-//     TMTBL_DSC: "월, 수 4교시(12:00) ~ 5교시(13:30)",
-//     DETL_CURI_CD: "기초",
-//     OPEN_DPTMJR_CD_NM: "불교대학 불교학부",
-//     CDT: "3.0",
-//     OPEN_ORGN_CLSF_CD: "CM015.110",
-//     ROOM_DSC: "B259(법학/만해관 303-201 강의실_스마트)",
-//     OPEN_YY: "2025",
-//     SCHGRD: "1학년",
-//     REMK: "팀티칭",
-//     OPEN_DPTMJR_CD: "DS031201",
-//     TCHR_DSC: "신성현",
-//     DVCLS: "01",
-//     TKCRS_PCNT: 6
-//   },
+// 테스트 케이스
+// const testCases: string[] = [
+//   "화, 목 7교시(15:00) ~ 8교시(16:30)",
+//   "월 4교시(12:00) ~ 5교시(13:30), 수 3교시(11:00) ~ 4교시(12:30)",
+//   "월 3교시(11:00) ~ 4.5교시(13:00), 월 5.5교시(13:30) ~ 6.5교시(15:00), 수 4.5교시(12:30) ~ 5.5교시(14:00)"
 // ];
 
-// const courses: Course[] = rawData.map(parseRawCourse);
-// console.dir(courses, { depth: null, colors: true });
+// testCases.forEach((input, idx) => {
+//   const result = parseSchedule(input);
+//   console.log(`\n[CASE ${idx + 1}] "${input}"`);
+//   console.dir(result, { depth: null });
+// });
