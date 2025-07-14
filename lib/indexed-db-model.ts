@@ -1,19 +1,10 @@
-import { Course } from "@/types/data";
+import { GroupData, TimetableData } from "@/types/model";
 
 const DB_NAME = "TimetableDB";
 const DB_VERSION = 1;
 const GROUP_STORE = "groups";
 const TIMETABLE_STORE = "timetables";
 
-export interface GroupData {
-  id: string;
-  data: Course[];
-}
-
-export interface TimetableData {
-  id: string;
-  data: Course[];
-}
 
 let db: IDBDatabase | null = null;
 

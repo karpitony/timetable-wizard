@@ -5,13 +5,12 @@ import {
   CardContent,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Trash2 } from 'lucide-react';
-import { formatTime } from '@/lib/format-time';
 import { Course } from '@/types/data';
 import { GroupData } from '@/types/group';
 import { useCourses } from '@/hooks/useCourses';
 import CourseSearchModal from '@/components/Wizard/CourseSearchModal';
+import CourseTable from '@/components/Wizard/CourseTable';
 
 
 interface GroupBoxProps {
@@ -59,43 +58,10 @@ function GroupBox ({
 
       <CardContent>
         {courses.length > 0 ? (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>학수번호</TableHead>
-                <TableHead>과목명</TableHead>
-                <TableHead className="w-[100px]">교수명</TableHead>
-                <TableHead>시간</TableHead>
-                <TableHead className="hidden md:table-cell">장소</TableHead>
-                <TableHead className="w-[40px] text-center">삭제</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {courses.map((course) => (
-                <TableRow key={course.id}>
-                <TableCell>{course.sbjNo}</TableCell>
-                <TableCell className='whitespace-pre-wrap'>{course.sbjName}</TableCell>
-                <TableCell>{course.instructor}</TableCell>
-                <TableCell className='whitespace-pre-wrap'>
-                  {course.timeSlots.map(slot =>
-                    `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`
-                  ).join(", ")}
-                </TableCell>
-                <TableCell className="hidden md:table-cell whitespace-pre-wrap">{course.location}</TableCell>
-                  <TableCell className="text-center">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-orange-500 hover:text-red-500"
-                      onClick={() => removeCourse(course.id)}
-                    >
-                      ×
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <CourseTable
+            courses={courses}
+            removeCourse={removeCourse}
+          />
         ) : (
           <p className="text-sm text-gray-500 text-center py-4">과목이 없습니다.</p>
         )}

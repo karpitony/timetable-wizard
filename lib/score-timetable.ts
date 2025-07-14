@@ -26,7 +26,7 @@ export function scoreTimetable(timetable: Timetable): number {
     });
   });
 
-  for (const [day, slots] of dayMap.entries()) {
+  for (const slots of dayMap.values()) {
     slots.sort((a,b) => a.startMinutes - b.startMinutes);
 
     earliestStart = Math.min(earliestStart, slots[0].startMinutes);
