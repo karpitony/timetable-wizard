@@ -46,7 +46,7 @@ const Wizard = () => {
   };
 
   return (
-    <section className="p-4 bg-gray-50 min-h-screen max-w-3xl mx-auto">
+    <section className="p-4 min-h-screen max-w-3xl mx-auto">
       <h2 className="text-3xl font-bold">시간표 마법사</h2>
       <p className="mt-2 text-lg">
         여러 개의 그룹을 만들어 각 그룹에 과목을 추가하세요. 각 그룹에서 하나의 수업을 골라 시간표를 생성합니다.

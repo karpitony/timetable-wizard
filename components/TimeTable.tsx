@@ -1,15 +1,35 @@
 'use client';
 
-import { useState } from "react";
+import { useMemo } from "react";
 import { Course } from "@/types/data";
+import TimetableWithSave from "./Wizard/TimetableWithSave";
 
 interface TimetableProps {
   courses: Course[];
 };
 
 function Timetable({ courses }: TimetableProps) {
-  const [startHour, setStartHour] = useState(9);
-  const [endHour, setEndHour] = useState(15);
+
+  const { startHour, endHour } = useMemo(() => {
+    if (!courses || courses.length === 0) {
+      return { startHour: 9, endHour: 15 }; // 기본값
+    }
+
+    let min = Infinity;
+    let max = -Infinity;
+
+    for (const course of courses) {
+      for (const slot of course.timeSlots) {
+        min = Math.min(min, slot.startMinutes);
+        max = Math.max(max, slot.endMinutes);
+      }
+    }
+
+    const startHour = Math.floor(min / 60) - 1;
+    const endHour = Math.ceil(max / 60) + 2;
+
+    return { startHour, endHour };
+  }, [courses]);
 
   const days = ["월", "화", "수", "목", "금", "토"];
   const skipCells = new Set<string>();
@@ -33,7 +53,7 @@ function Timetable({ courses }: TimetableProps) {
 
   // 강의가 시작하는 시간을 추적하여, 해당 시간에만 셀을 렌더링하도록 합니다.
   const courseStartsAt = new Map<string, Course>();
-  courses.forEach(course => {
+  courses?.forEach(course => {
     course.timeSlots.forEach(slot => {
       const key = `${slot.day}-${slot.startMinutes}`;
       courseStartsAt.set(key, course);
@@ -41,6 +61,7 @@ function Timetable({ courses }: TimetableProps) {
   });
 
   return (
+    <>
     <div className="w-full max-w-4xl mx-auto border border-gray-300 rounded-md overflow-auto shadow-md">
       <table className="w-full border-collapse table-fixed text-sm">
         <thead className="bg-gray-100 sticky top-0 z-10">
@@ -126,6 +147,10 @@ function Timetable({ courses }: TimetableProps) {
         </tbody>
       </table>
     </div>
+    <div className="mt-4">
+      <TimetableWithSave courses={courses} />
+    </div>
+    </>
   );
 };
 

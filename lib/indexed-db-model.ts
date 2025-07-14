@@ -10,7 +10,10 @@ export interface GroupData {
   data: Course[];
 }
 
-export type Timetable = Course[]; // 여러 과목의 시간 배열 모음
+export interface TimetableData {
+  id: string;
+  data: Course[];
+}
 
 let db: IDBDatabase | null = null;
 
@@ -100,7 +103,7 @@ export async function deleteGroup(id: string): Promise<void> {
 }
 
 
-export async function addTimetable(timetable: Timetable): Promise<void> {
+export async function addTimetable(timetable: TimetableData): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
     const tx = database.transaction(TIMETABLE_STORE, "readwrite");
@@ -112,7 +115,7 @@ export async function addTimetable(timetable: Timetable): Promise<void> {
   });
 }
 
-export async function getTimetable(id: string): Promise<Timetable | undefined> {
+export async function getTimetable(id: string): Promise<TimetableData | undefined> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
     const tx = database.transaction(TIMETABLE_STORE, "readonly");
@@ -124,7 +127,7 @@ export async function getTimetable(id: string): Promise<Timetable | undefined> {
   });
 }
 
-export async function getAllTimetables(): Promise<Timetable[]> {
+export async function getAllTimetables(): Promise<TimetableData[]> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
     const tx = database.transaction(TIMETABLE_STORE, "readonly");
@@ -136,7 +139,7 @@ export async function getAllTimetables(): Promise<Timetable[]> {
   });
 }
 
-export async function updateTimetable(timetable: Timetable): Promise<void> {
+export async function updateTimetable(timetable: TimetableData): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
     const tx = database.transaction(TIMETABLE_STORE, "readwrite");

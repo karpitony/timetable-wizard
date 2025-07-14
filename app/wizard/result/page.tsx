@@ -19,7 +19,7 @@ export default function ResultPage() {
   }, []);
 
   return (
-    <div className="p-4 bg-gray-50 min-h-screen max-w-3xl mx-auto">
+    <div className="p-4 min-h-screen max-w-3xl mx-auto">
       <h2 className="font-bold text-3xl mb-4">결과 페이지</h2>
 
       {isLoading && <p className="text-blue-500">{loadingMessage}</p>}
@@ -32,7 +32,7 @@ export default function ResultPage() {
             공강, 늦게 시작, 일찍 끝나는 경우 가산점이 부과되어 앞에 표시됩니다.
           </p>
 
-          {timetables.slice(0, 5).map((result, idx) => (
+          {timetables.map((result, idx) => (
             <div key={idx} className="mb-10">
               <h3 className="text-xl font-semibold mb-2">시간표 {idx + 1} (점수: {result.score})</h3>
               <Timetable courses={result.timetable} />
