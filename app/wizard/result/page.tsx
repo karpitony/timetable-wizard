@@ -29,7 +29,7 @@ export default function ResultPage() {
   const currentPageItems = timetables.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   return (
-    <div className="p-4 min-h-screen max-w-3xl mx-auto">
+    <div className="p-2 md:p-4 min-h-screen max-w-3xl mx-auto">
       <h2 className="font-bold text-3xl mb-4">결과 페이지</h2>
 
       {isLoading && <p className="text-blue-500">{loadingMessage}</p>}

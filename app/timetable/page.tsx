@@ -58,7 +58,7 @@ export default function TimetablePage() {
   if (loading) return <div>불러오는 중...</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="max-w-4xl mx-auto p-2 md:p-4 min-h-screen">
       <h1 className="text-2xl font-bold mb-4">내 시간표 목록</h1>
 
       {!selected ? (

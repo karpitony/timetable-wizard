@@ -84,7 +84,7 @@ function Timetable({ courses }: TimetableProps) {
       <table className="w-full border-collapse table-fixed text-sm">
         <thead className="bg-gray-100 sticky top-0 z-10">
           <tr>
-            <th className="w-12 border-2 border-gray-300 px-2 py-2"></th>
+            <th className="w-6 md:w-12 border-2 border-gray-300 px-2 py-2"></th>
             {days.map((day, idx) => (
               <th
                 key={idx}
@@ -141,12 +141,12 @@ function Timetable({ courses }: TimetableProps) {
                     return (
                       <td
                         key={colIdx}
-                        className={`h-10 border-1 border-gray-300 p-2 relative text-xs align-top ${assignColor(course.id)}`}
+                        className={`h-10 border-1 border-gray-300 p-0.5 md:p-2 relative text-xs align-top ${assignColor(course.id)}`}
                         rowSpan={rowspanValue}
                       >
                         <h3 className="font-bold text-sm">{course.sbjName}</h3>
-                        <p className="font-semibold">{course.instructor}</p>
-                        <p className="hidden md:flex">{course.location}</p>
+                        <p className="font-bold">{course.instructor}</p>
+                        <p className="overflow-ellipsis">{course.location}</p>
                       </td>
                     );
                   }
