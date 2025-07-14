@@ -34,7 +34,7 @@ export default function CourseTable({
       <TableBody>
         {courses.map((course) => (
           <TableRow key={course.id}>
-          <TableCell>{course.sbjNo}</TableCell>
+          <TableCell>{course.id}</TableCell>
           <TableCell className='whitespace-pre-wrap'>{course.sbjName}</TableCell>
           <TableCell>{course.instructor}</TableCell>
           <TableCell className='whitespace-pre-wrap'>

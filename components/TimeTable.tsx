@@ -144,9 +144,9 @@ function Timetable({ courses }: TimetableProps) {
                         className={`h-10 border-1 border-gray-300 p-2 relative text-xs align-top ${assignColor(course.id)}`}
                         rowSpan={rowspanValue}
                       >
-                        <div className="font-semibold">{course.sbjNo}</div>
-                        <div>{course.sbjName}</div>
-                        <div>{course.instructor}</div>
+                        <h3 className="font-bold text-sm">{course.sbjName}</h3>
+                        <p className="font-semibold">{course.instructor}</p>
+                        <p className="hidden md:flex">{course.location}</p>
                       </td>
                     );
                   }

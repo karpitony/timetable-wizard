@@ -51,7 +51,7 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
               className="cursor-pointer p-2 border rounded hover:bg-gray-100"
               onClick={() => onSelect(course)}
             >
-              <div className="font-medium">{course.sbjName} ({course.sbjNo})</div>
+              <div className="font-medium">{course.sbjName} ({course.id})</div>
               <div className="text-sm text-muted-foreground">
                 {course.instructor} | {course.timeSlots.map(slot =>
                   `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`
