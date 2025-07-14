@@ -45,7 +45,7 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
           className="mt-4"
         />
         <ul className="space-y-2 h-[50vh] md:h-[70vh]">
-          {filtered.slice(0, 20).map((course) => (
+          {filtered.map((course) => (
             <li
               key={course.id}
               className="cursor-pointer p-2 border rounded hover:bg-gray-100"
