@@ -28,6 +28,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <meta name="google-site-verification" content="r766th2h5faMjIfYnPUTpD-8xpC7920UHRfOOgQKOVY" />
+        <meta name="naver-site-verification" content="6afa6a19c3a3b924d485e2c8379e993526817663" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -38,7 +42,7 @@ export default function RootLayout({
         <Footer />
         {/* Analytics */}
         <Analytics />
-        <GoogleAnalytics gaId="G-SMCK1FSKR3" />
+        <GoogleAnalytics gaId="GT-NC8XXWX3" />
       </body>
     </html>
   );
