@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧙 시간표 마법사
+시간표 마법사는 대학생을 위한 시간표 생성 및 관리 도구입니다. 
+에타 시간표 업데이트가 느리기에 그동안 사용할 용도로 만들었습니다.
 
-## Getting Started
+간단한 UI를 통해 수업 정보를 입력하고, 자동으로 최적의 시간표 조합을 생성하여 시각적으로 확인하고 저장할 수 있습니다.
 
-First, run the development server:
+## 🔧 주요 기능
+- **과목 그룹 기반 자동 시간표 생성**
+여러 그룹별 과목 조합을 바탕으로 시간표를 자동 생성합니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **시간표 점수화 및 정렬**
+공강일 수, 수업 시작 시간, 종료 시간, 연강 등을 고려하여 시간표에 점수를 부여하고 정렬합니다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **시각적 시간표 UI**
+직관적인 시간표 테이블로 구성되어 쉽게 확인할 수 있습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **시간표 저장 및 관리 (IndexedDB)**
+생성된 시간표를 브라우저 내 IndexedDB에 저장하고, 나중에 불러와서 추가 수정 또는 삭제할 수 있습니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **수업 추가 및 삭제 기능**
+저장된 시간표에 원하는 수업을 추가하거나 삭제할 수 있으며, 충돌 여부도 자동으로 검사합니다.
 
-## Learn More
+## 📦 기술 스택
+- Next.js + App Router (Client Component 기반)
+- Tailwind CSS + shadcn/ui
+- IndexedDB (로컬 저장소)
+- TypeScript
 
-To learn more about Next.js, take a look at the following resources:
+## 📸 스크린샷
+(원하시면 실제 페이지 캡처를 여기에 넣으세요)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ 향후 개선 아이디어
+- 시간표 PDF/이미지 다운로드
+- 로그인 및 서버 연동 저장
+- 다른 사용자와 공유 기능
