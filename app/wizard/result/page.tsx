@@ -19,7 +19,7 @@ export default function ResultPage() {
       await generate(groups);
       setLoadingMessage("");
     })();
-  }, []);
+  }, [generate]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

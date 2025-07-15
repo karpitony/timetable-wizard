@@ -50,9 +50,8 @@ function Timetable({ courses }: TimetableProps) {
         max = Math.max(max, slot.endMinutes);
       }
     }
-
-    const startHour = Math.floor(min / 60) - 1;
-    const endHour = Math.ceil(max / 60) + 2;
+    const startHour = Math.floor(min / 60);
+    const endHour = Math.ceil(max / 60);
 
     return { startHour, endHour };
   }, [courses]);
@@ -129,7 +128,10 @@ function Timetable({ courses }: TimetableProps) {
 
                     if (!timeSlot) return <td key={colIdx} className="border-1 border-gray-300 p-2 h-10 "></td>;
 
-                    const durationMinutes = timeSlot.endMinutes - timeSlot.startMinutes;
+                    let durationMinutes = timeSlot.endMinutes - timeSlot.startMinutes;
+                    if (durationMinutes % 30 !== 0) {
+                      durationMinutes += 10; // 30분 단위로 맞추기 위해 10분 추가
+                    }
                     const rowspanValue = durationMinutes / 30;
 
                     // 아래 행에서 스킵할 셀들 등록
@@ -141,12 +143,17 @@ function Timetable({ courses }: TimetableProps) {
                     return (
                       <td
                         key={colIdx}
-                        className={`h-10 border-1 border-gray-300 p-0.5 md:p-2 relative text-xs align-top ${assignColor(course.id)}`}
+                        className={`h-4 md:h-10 border-1 border-gray-300 p-0.5 md:p-2 relative text-[10px] md:text-xs align-top ${assignColor(course.id)}`}
                         rowSpan={rowspanValue}
                       >
-                        <h3 className="font-bold text-sm">{course.sbjName}</h3>
+                        <h3 className="font-bold text-xs md:text-sm">{course.sbjName}</h3>
                         <p className="font-bold">{course.instructor}</p>
-                        <p className="overflow-ellipsis">{course.location}</p>
+                        <p 
+                          className={`whitespace-pre-wrap break-words max-h-${4*rowspanValue - 2} overflow-auto`}
+                          title={course.location}
+                        >
+                          {course.location}
+                        </p>
                       </td>
                     );
                   }
@@ -155,7 +162,7 @@ function Timetable({ courses }: TimetableProps) {
                   return (
                     <td
                       key={colIdx}
-                      className="border-1 border-gray-300 p-2 h-10"
+                      className="border-1 border-gray-300 p-2 h-4 md:h-10"
                     />
                   );
                 })}
