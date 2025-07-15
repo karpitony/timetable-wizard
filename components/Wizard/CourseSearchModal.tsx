@@ -24,7 +24,9 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
   const [query, setQuery] = useState('');
 
   const filtered = allCourses.filter((c) =>
-    c.sbjName.includes(query) || c.instructor.includes(query) || c.sbjNo.includes(query)
+    c.sbjName.toLowerCase().includes(query.toLowerCase()) ||
+    c.instructor.toLowerCase().includes(query.toLowerCase()) ||
+    c.sbjNo.toLowerCase().includes(query.toLowerCase())
   );
 
   const parentRef = useRef<HTMLUListElement>(null);
@@ -32,7 +34,7 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
   const rowVirtualizer = useVirtualizer({
     count: filtered.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 72, // 각 item 높이 추정값 (px)
+    estimateSize: () => 80, // 각 item 높이 추정값 (px)
     overscan: 10,
   });
 
@@ -68,7 +70,7 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
                 <li
                   key={course.id}
                   onClick={() => onSelect(course)}
-                  className="absolute left-0 right-0 cursor-pointer p-2 border rounded hover:bg-gray-100"
+                  className="absolute left-0 right-0 cursor-pointer p-2 border rounded hover:bg-gray-100 flex flex-col justify-center"
                   style={{
                     top: 0,
                     transform: `translateY(${virtualRow.start}px)`,

@@ -153,7 +153,7 @@ function Timetable({ courses }: TimetableProps) {
                     return (
                       <td
                         key={colIdx}
-                        className={`h-4 md:h-10 border-1 border-gray-300 p-0.5 md:p-2 relative text-[10px] md:text-xs align-top ${assignColor(course.id)}`}
+                        className={`h-10 border-1 border-gray-300 p-0.5 md:p-2 relative text-[10px] md:text-xs align-top ${assignColor(course.id)}`}
                         rowSpan={rowspanValue}
                       >
                         <h3 className="font-bold text-xs md:text-sm">
@@ -176,7 +176,7 @@ function Timetable({ courses }: TimetableProps) {
                   return (
                     <td
                       key={colIdx}
-                      className="border-1 border-gray-300 p-2 h-4 md:h-10"
+                      className="border-1 border-gray-300 p-2 h-10"
                     />
                   );
                 })}
