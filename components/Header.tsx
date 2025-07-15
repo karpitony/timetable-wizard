@@ -29,6 +29,7 @@ export default function Header() {
           <NavLink href="/" text="홈" />
           <NavLink href="/wizard" text="마법사 시작" />
           <NavLink href="/timetable" text="내 시간표 보기" />
+          <NavLink href="/notice" text="공지사항" />
         </nav>
       </div>
 
@@ -38,6 +39,7 @@ export default function Header() {
           <NavLink href="/" text="홈" />
           <NavLink href="/wizard" text="마법사 시작" />
           <NavLink href="/timetable" text="내 시간표 보기" />
+          <NavLink href="/notice" text="공지사항" />
         </nav>
       )}
     </header>
