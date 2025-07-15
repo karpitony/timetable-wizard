@@ -5,6 +5,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import NoticeAlert from "@/components/NoticeAlert";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
+        <NoticeAlert message="시간표 가리기 기능이 추가되었습니다!" />
         <main>
           {children}
         </main>

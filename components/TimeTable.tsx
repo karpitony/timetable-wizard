@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Course } from "@/types/data";
+import { Switch } from "@/components/ui/switch";
 import TimetableWithSave from "./Wizard/TimetableWithSave";
 
 interface TimetableProps {
@@ -20,6 +21,7 @@ const COLORS = [
 
 function Timetable({ courses }: TimetableProps) {
   const [colorMap, setColorMap] = useState<Map<string, string>>(new Map());
+  const [infoHidden, setInfoHidden] = useState(false);
 
   const assignColor = (id: string) => {
     if (colorMap.has(id)) return colorMap.get(id)!;
@@ -79,6 +81,14 @@ function Timetable({ courses }: TimetableProps) {
 
   return (
     <>
+    <div className="flex items-center gap-2 mb-4 justify-end">
+      <label className="select-none">정보 가리기</label>
+      <Switch
+        checked={infoHidden}
+        onCheckedChange={setInfoHidden}
+      />
+    </div>
+
     <div className="w-full max-w-4xl mx-auto border border-gray-300 rounded-md overflow-auto shadow-md">
       <table className="w-full border-collapse table-fixed text-sm">
         <thead className="bg-gray-100 sticky top-0 z-10">
@@ -146,13 +156,17 @@ function Timetable({ courses }: TimetableProps) {
                         className={`h-4 md:h-10 border-1 border-gray-300 p-0.5 md:p-2 relative text-[10px] md:text-xs align-top ${assignColor(course.id)}`}
                         rowSpan={rowspanValue}
                       >
-                        <h3 className="font-bold text-xs md:text-sm">{course.sbjName}</h3>
-                        <p className="font-bold">{course.instructor}</p>
+                        <h3 className="font-bold text-xs md:text-sm">
+                          {infoHidden ? "" : course.sbjName}
+                        </h3>
+                        <p className="font-bold">
+                          {infoHidden ? "" : course.instructor}
+                        </p>
                         <p 
                           className={`whitespace-pre-wrap break-words max-h-${4*rowspanValue - 2} overflow-auto`}
                           title={course.location}
                         >
-                          {course.location}
+                          {infoHidden ? "" : course.location}
                         </p>
                       </td>
                     );
