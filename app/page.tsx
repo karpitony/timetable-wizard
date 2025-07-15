@@ -32,7 +32,7 @@ export default function Home() {
   );
 }
 
-export const dummyCourses:Course[] = [
+const dummyCourses:Course[] = [
   {
     id: "BIS2001-01",
     sbjNo: "BIS2001",
