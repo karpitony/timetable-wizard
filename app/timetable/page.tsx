@@ -16,7 +16,7 @@ export default function TimetablePage() {
   const [selected, setSelected] = useState<TimetableData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const allCourses = useCourses();
+  const { allCourses, isLoading, error } = useCourses();
 
   useEffect(() => {
     (async () => {
@@ -108,10 +108,15 @@ export default function TimetablePage() {
           />
 
           <div className="flex justify-center mt-4">
-            <CourseSearchModal
-              allCourses={allCourses}
-              onSelect={handleAddCourse}
-            />
+            {isLoading && <p>과목 목록을 불러오는 중...</p>}
+            {error && <p className="text-red-500">과목 목록 불러오기 실패: {error}</p>}
+
+            {!isLoading && !error && allCourses && (
+              <CourseSearchModal
+                allCourses={allCourses}
+                onSelect={handleAddCourse}
+              />
+            )}
           </div>
         </div>
       )}

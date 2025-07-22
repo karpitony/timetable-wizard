@@ -71,6 +71,8 @@ export function parseRawCourse(raw: RawCourseItem): Course {
     instructor: raw.TCHR_DSC || '',
     location: raw.ROOM_DSC || '',
     timeSlots: parseSchedule(raw.TMTBL_DSC ?? ""),
+    fullParticipant: raw.ALL_FULL_PCNT ?? undefined,
+    currentParticipant: raw.TKCRS_PCNT ?? undefined,
   };
 }
 

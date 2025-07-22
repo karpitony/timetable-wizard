@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build:data": "tsx scripts/parse.ts",
+    "dedupe": "tsx scripts/dedupe.ts",
     "dev": "next dev --turbopack",
     "build": "pnpm build:data && next build",
     "start": "next start",

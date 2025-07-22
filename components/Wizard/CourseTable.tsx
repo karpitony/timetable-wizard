@@ -13,11 +13,13 @@ import { formatTime } from '@/lib/format-time';
 interface CourseTableProps {
   courses: Course[];
   removeCourse: (courseId: string) => void;
+  isCompetitionEnabled?: boolean;
 }
 
 export default function CourseTable({
   courses,
-  removeCourse
+  removeCourse,
+  isCompetitionEnabled = false
 }: CourseTableProps) {
   return (
     <Table>
@@ -25,24 +27,38 @@ export default function CourseTable({
         <TableRow>
           <TableHead>학수번호</TableHead>
           <TableHead>과목명</TableHead>
-          <TableHead className="w-[100px]">교수명</TableHead>
+          <TableHead className="w-[80px]">교수명</TableHead>
           <TableHead>시간</TableHead>
           <TableHead className="hidden md:table-cell">장소</TableHead>
+          {isCompetitionEnabled && (
+            <>
+              <TableHead className="w-[40px] text-center">신청자 수</TableHead>
+              <TableHead className="w-[40px] text-center">경쟁률</TableHead>
+            </>
+          )}
           <TableHead className="w-[40px] text-center">삭제</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {courses.map((course) => (
           <TableRow key={course.id}>
-          <TableCell>{course.id}</TableCell>
-          <TableCell className='whitespace-pre-wrap'>{course.sbjName}</TableCell>
-          <TableCell>{course.instructor}</TableCell>
-          <TableCell className='whitespace-pre-wrap'>
-            {course.timeSlots.map(slot =>
-              `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`
-            ).join(", ")}
-          </TableCell>
-          <TableCell className="hidden md:table-cell whitespace-pre-wrap">{course.location}</TableCell>
+            <TableCell>{course.id}</TableCell>
+            <TableCell className='whitespace-pre-wrap'>{course.sbjName}</TableCell>
+            <TableCell>{course.instructor}</TableCell>
+            <TableCell className='whitespace-pre-wrap'>
+              {course.timeSlots.map(slot =>
+                `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`
+              ).join(", ")}
+            </TableCell>
+            <TableCell className="hidden md:table-cell whitespace-pre-wrap">{course.location}</TableCell>
+            {isCompetitionEnabled && (
+              <>
+                <TableHead className="w-[40px] text-center">{course.currentParticipant}</TableHead>
+                <TableHead className="w-[40px] text-center">
+                  {(course.fullParticipant && course.currentParticipant) ? (course.currentParticipant / course.fullParticipant).toFixed(2) : "error"}
+                </TableHead>
+              </>
+            )}
             <TableCell className="text-center">
               <Button
                 variant="ghost"
