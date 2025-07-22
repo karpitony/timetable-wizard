@@ -96,6 +96,7 @@ export default function TimetablePage() {
           <h2 className="text-xl font-semibold mt-4">과목 목록</h2>
           <CourseTable
             courses={selected.data}
+            buttonType="remove"
             removeCourse={(courseId) => {
               const updated = selected.data.filter((c) => c.id !== courseId);
               const updatedTimetable = { ...selected, data: updated };

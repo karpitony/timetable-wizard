@@ -39,7 +39,7 @@ function GroupBox ({
     const updated = courses.filter(course => course.id !== courseId);
     updateGroupCourses(group.id, updated);
   };
-  
+
   if (isLoading || !allCourses) return <p>과목 목록을 불러오는 중...</p>;
   if (error) return <p className="text-red-500">과목 목록 불러오기 실패: {error}</p>;
   return (
@@ -62,6 +62,7 @@ function GroupBox ({
         {courses.length > 0 ? (
           <CourseTable
             courses={courses}
+            buttonType="remove"
             removeCourse={removeCourse}
           />
         ) : (

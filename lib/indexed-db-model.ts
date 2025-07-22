@@ -2,7 +2,7 @@ import { Course } from "@/types/data";
 import { GroupData, TimetableData } from "@/types/model";
 
 const DB_NAME = "TimetableDB";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const GROUP_STORE = "groups";
 const TIMETABLE_STORE = "timetables";
 const MY_COURSE_COMPETITION_STORE = "myCourseCompetition";

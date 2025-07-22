@@ -1,8 +1,13 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import CourseTable from "@/components/Wizard/CourseTable";
 import { useCourses } from '@/hooks/useCourses';
 import { Course } from '@/types/data';
+import {
+  getAllMyCourses,
+  saveMyCourse,
+  deleteMyCourse,
+} from '@/lib/indexed-db-model';
 
 const PAGE_INCREMENT = 30;
 const IS_COMPETITION_ENABLED = true;
@@ -24,25 +29,32 @@ export default function CourseCompetitionPage() {
     );
   }, [allCourses, searchQuery]);
 
-
   const visibleCourses = filteredCourses ? filteredCourses.slice(0, visibleCount) : [];
 
   const loadMore = () => {
     setVisibleCount((prev) => Math.min(prev + PAGE_INCREMENT, allCourses?.length ?? prev));
   };
 
+  useEffect(() => {
+    const loadMyCourses = async () => {
+      const stored = await getAllMyCourses();
+      setMyCourses(stored);
+    };
+    loadMyCourses();
+  }, []);
+
 
   // 즐겨찾기 추가 (중복 방지)
-  const addToFavorites = (course: Course) => {
+  const addToFavorites =  async (course: Course) => {
     if (myCourses.find(c => c.id === course.id)) return;
     setMyCourses(prev => [...prev, course]);
-    // TODO: IndexedDB 저장 기능 추가 가능
+    await saveMyCourse(course);
   };
 
   // 즐겨찾기에서 제거
-  const removeFromFavorites = (courseId: string) => {
+  const removeFromFavorites = async (courseId: string) => {
     setMyCourses(prev => prev.filter(c => c.id !== courseId));
-    // TODO: IndexedDB 삭제 기능 추가 가능
+    await deleteMyCourse(courseId);
   };
 
   if (!IS_COMPETITION_ENABLED) return (
@@ -61,6 +73,7 @@ export default function CourseCompetitionPage() {
         <h2 className="text-lg font-semibold mb-2">내 즐겨찾기 강의 목록</h2>
         <CourseTable
           courses={myCourses}
+          buttonType="remove"
           removeCourse={removeFromFavorites}
           isCompetitionEnabled={IS_COMPETITION_ENABLED}
         />
@@ -103,9 +116,9 @@ export default function CourseCompetitionPage() {
           <>
           <CourseTable
             courses={visibleCourses}
-            removeCourse={() => {}}
+            buttonType="add"
+            addCourse={addToFavorites}
             isCompetitionEnabled={IS_COMPETITION_ENABLED}
-            //onAddCourse={addToFavorites} // CourseTable에서 추가 버튼 활성화 시
           />
           {visibleCount < (filteredCourses?.length ?? 0) && (
             <div className="flex justify-center mt-4">
