@@ -26,7 +26,7 @@ function GroupBox ({
   removeGroup,
   updateGroupCourses
 }: GroupBoxProps) {
-  const allCourses = useCourses();
+  const { allCourses, isLoading, error } = useCourses();
   const courses = group.data || [];
 
   const addCourse = (course: Course) => {
@@ -40,6 +40,8 @@ function GroupBox ({
     updateGroupCourses(group.id, updated);
   };
 
+  if (isLoading || !allCourses) return <p>과목 목록을 불러오는 중...</p>;
+  if (error) return <p className="text-red-500">과목 목록 불러오기 실패: {error}</p>;
   return (
     <Card className="mb-6 shadow-lg">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -60,6 +62,7 @@ function GroupBox ({
         {courses.length > 0 ? (
           <CourseTable
             courses={courses}
+            buttonType="remove"
             removeCourse={removeCourse}
           />
         ) : (

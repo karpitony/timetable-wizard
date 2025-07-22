@@ -11,7 +11,6 @@ if (!rawJson || !Array.isArray(rawJson.dsMain)) {
 const dsMain: RawCourseItem[] = rawJson.dsMain;
 const parsed: Course[] = dsMain
   .map(parseRawCourse)
-  .filter((course) => course.timeSlots.length > 0);
 
 const outputPath = path.resolve(__dirname, "../public/parsedData.json");
 fs.writeFileSync(outputPath, JSON.stringify(parsed, null, 2), "utf-8");

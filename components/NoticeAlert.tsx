@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-const STORAGE_KEY = "noticeHidden";
+const STORAGE_KEY = "noticeHidden_2025_07_22";
 
 export default function NoticeAlert({ message }: { message: string }) {
   const [hidden, setHidden] = useState(true);
