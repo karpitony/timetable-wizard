@@ -37,7 +37,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
-        <NoticeAlert message="시간표 가리기 기능이 추가되었습니다!" />
+        <NoticeAlert message="희망강의 경쟁률 확인 기능이 추가되었습니다!" />
         <main>
           {children}
         </main>
