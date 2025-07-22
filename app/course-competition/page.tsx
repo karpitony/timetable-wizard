@@ -25,7 +25,7 @@ export default function CourseCompetitionPage() {
     return allCourses.filter((c) =>
       c.sbjName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       c.instructor.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.sbjNo.toLowerCase().includes(searchQuery.toLowerCase())
+      c.id.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [allCourses, searchQuery]);
 

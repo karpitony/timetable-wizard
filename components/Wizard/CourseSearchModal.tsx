@@ -26,7 +26,7 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
   const filtered = allCourses.filter((c) =>
     c.sbjName.toLowerCase().includes(query.toLowerCase()) ||
     c.instructor.toLowerCase().includes(query.toLowerCase()) ||
-    c.sbjNo.toLowerCase().includes(query.toLowerCase())
+    c.id.toLowerCase().includes(query.toLowerCase())
   );
 
   const parentRef = useRef<HTMLUListElement>(null);
