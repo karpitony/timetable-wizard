@@ -37,7 +37,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
-        <NoticeAlert message="희망강의 경쟁률 확인 기능이 추가되었습니다!" />
+        <NoticeAlert 
+          message="도움이 되셨다면 GitHub에 별⭐️을 눌러주세요. 큰 힘이 됩니다!"
+          href="https://github.com/karpitony/timetable-wizard"
+        />
         <main>
           {children}
         </main>
