@@ -2,7 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import rawJson from '../public/rawData_2025_2.json' assert { type: 'json' };
 import { Course } from '../types/data';
-import { parseRawCourse, RawCourseItem } from '@/lib/Parser';
+import { parseRawCourse } from '@/lib/Parser';
+import { RawCourseItem } from '@/types/raw-data';
 
 if (!rawJson || !Array.isArray(rawJson.dsMain)) {
   throw new Error('❌ rawData.json의 dsMain 필드가 배열이 아닙니다.');

@@ -1,48 +1,64 @@
 import { useEffect, useState } from 'react';
 import { Course } from '@/types/data';
 
-const LOCAL_STORAGE_KEY = 'cachedCourses';
+const CACHE_VERSION = 1;
+const CACHE_KEY = `courses@2026-1@v${CACHE_VERSION}`;
 const CACHE_TTL = 1000 * 60 * 60; // 1시간
 
 type CachedCourses = {
+  version: number;
   timestamp: number;
   data: Course[];
 };
+
+function loadCache(): CachedCourses | null {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function saveCache(data: Course[]) {
+  const payload: CachedCourses = {
+    version: CACHE_VERSION,
+    timestamp: Date.now(),
+    data,
+  };
+  localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+}
 
 export function useCourses() {
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const cached = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const cached = loadCache();
 
     if (cached) {
-      try {
-        const parsed: CachedCourses = JSON.parse(cached);
-        const isExpired = Date.now() - parsed.timestamp > CACHE_TTL;
-
-        if (!isExpired) {
-          setCourses(parsed.data);
-          return; // 캐시 유효하면 fetch 생략
-        }
-      } catch (err) {
-        console.warn('Failed to parse cached courses', err);
-      }
+      setCourses(cached.data);
     }
 
-    // fetch 진행
+    const isExpired = !cached || Date.now() - cached.timestamp > CACHE_TTL;
+
+    if (!isExpired) return;
+
+    // 백그라운드 갱신
     fetch('/parsedData.json')
       .then(res => {
-        if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+        if (!res.ok) throw new Error();
         return res.json();
       })
       .then((data: Course[]) => {
         setCourses(data);
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+        saveCache(data);
       })
-      .catch(err => {
-        console.error(err);
-        setError('강의 데이터를 불러오는 중 오류가 발생했습니다.');
+      .catch(() => {
+        if (!cached) {
+          setError('강의 데이터를 불러오는 중 오류가 발생했습니다.');
+        }
       });
   }, []);
 

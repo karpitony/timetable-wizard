@@ -22,7 +22,7 @@ interface Props {
 
 export default function CourseSearchModal({ allCourses, onSelect }: Props) {
   const [query, setQuery] = useState('');
-
+  if (!allCourses) return null;
   const filtered = allCourses.filter(
     c =>
       c.sbjName.toLowerCase().includes(query.toLowerCase()) ||
