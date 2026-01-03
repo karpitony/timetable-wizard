@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { GroupData } from "@/types/group";
-import { Course } from "@/types/data";
-import { generateTimetables } from "@/lib/generate-timetables";
+import { useState } from 'react';
+import { GroupData } from '@/types/group';
+import { Course } from '@/types/data';
+import { generateTimetables } from '@/lib/generate-timetables';
 
 interface TimetableResult {
   timetable: Course[];
@@ -24,7 +24,7 @@ export function useTimetables() {
       if (e instanceof Error) {
         setError(e.message);
       } else {
-        setError("알 수 없는 오류가 발생했습니다.");
+        setError('알 수 없는 오류가 발생했습니다.');
       }
     } finally {
       setIsLoading(false);

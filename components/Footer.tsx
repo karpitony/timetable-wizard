@@ -1,28 +1,28 @@
-import { LuGithub } from "react-icons/lu";
-import { SiLinkedin, SiVelog } from "react-icons/si";
-import { IoHomeSharp } from "react-icons/io5";
-import Link from "next/link";
+import { LuGithub } from 'react-icons/lu';
+import { SiLinkedin, SiVelog } from 'react-icons/si';
+import { IoHomeSharp } from 'react-icons/io5';
+import Link from 'next/link';
 
 const LINKS = [
   {
-    href: "https://github.com/karpitony",
+    href: 'https://github.com/karpitony',
     icon: <LuGithub size={24} />,
-    label: "GitHub",
+    label: 'GitHub',
   },
   {
-    href: "https://www.linkedin.com/in/yunseok-song",
+    href: 'https://www.linkedin.com/in/yunseok-song',
     icon: <SiLinkedin size={24} />,
-    label: "LinkedIn",
+    label: 'LinkedIn',
   },
   {
-    href: "https://velog.io/@karpitony/posts",
+    href: 'https://velog.io/@karpitony/posts',
     icon: <SiVelog size={24} />,
-    label: "Velog",
+    label: 'Velog',
   },
   {
-    href: "https://yunseok.vercel.app",
+    href: 'https://yunseok.vercel.app',
     icon: <IoHomeSharp size={24} />,
-    label: "Personal Site",
+    label: 'Personal Site',
   },
 ];
 
@@ -36,9 +36,7 @@ export default function Footer() {
         <LuGithub size={24} />
         <span className="text-lg font-semibold">소스코드</span>
       </Link>
-      <p className="text-sm mt-8">
-        Made by Yunseok Song
-      </p>
+      <p className="text-sm mt-8">Made by Yunseok Song</p>
       <div className="flex items-center mt-4 justify-center gap-6">
         {LINKS.map(link => (
           <Link

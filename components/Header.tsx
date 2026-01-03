@@ -1,15 +1,15 @@
 'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import Link from 'next/link';
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { href: "/", text: "홈" },
-  { href: "/wizard", text: "마법사 시작" },
-  { href: "/timetable", text: "내 시간표 보기" },
-  { href: "/course-competition", text: "강의 경쟁률" },
-  { href: "/notice", text: "공지사항" },
+  { href: '/', text: '홈' },
+  { href: '/wizard', text: '마법사 시작' },
+  { href: '/timetable', text: '내 시간표 보기' },
+  { href: '/course-competition', text: '강의 경쟁률' },
+  { href: '/notice', text: '공지사항' },
 ];
 
 export default function Header() {
@@ -34,7 +34,7 @@ export default function Header() {
 
         {/* 데스크탑 네비게이션 */}
         <nav className="hidden md:flex gap-4">
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.map(item => (
             <NavLink key={item.href} href={item.href} text={item.text} />
           ))}
         </nav>
@@ -43,7 +43,7 @@ export default function Header() {
       {/* 모바일 드롭다운 메뉴 */}
       {open && (
         <nav className="md:hidden flex flex-col gap-2 px-4 pb-4">
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.map(item => (
             <NavLink key={item.href} href={item.href} text={item.text} />
           ))}
         </nav>

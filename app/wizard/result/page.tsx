@@ -1,23 +1,23 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { useTimetables } from "@/hooks/useTimetables";
-import { getAllGroups } from "@/lib/indexed-db-model";
-import Timetable from "@/components/TimeTable";
+import { useEffect, useState } from 'react';
+import { useTimetables } from '@/hooks/useTimetables';
+import { getAllGroups } from '@/lib/indexed-db-model';
+import Timetable from '@/components/TimeTable';
 
 const PAGE_SIZE = 10;
 
 export default function ResultPage() {
   const { generate, timetables, isLoading, error } = useTimetables();
-  const [loadingMessage, setLoadingMessage] = useState("");
+  const [loadingMessage, setLoadingMessage] = useState('');
   const [page, setPage] = useState(0);
 
   useEffect(() => {
     (async () => {
       const groups = await getAllGroups();
-      setLoadingMessage("시간표를 생성 중입니다...");
+      setLoadingMessage('시간표를 생성 중입니다...');
       await generate(groups);
-      setLoadingMessage("");
+      setLoadingMessage('');
     })();
   }, [generate]);
 
@@ -59,7 +59,9 @@ export default function ResultPage() {
             >
               이전
             </button>
-            <span className="px-3 py-1">{page + 1} / {pageCount}</span>
+            <span className="px-3 py-1">
+              {page + 1} / {pageCount}
+            </span>
             <button
               onClick={() => setPage(p => Math.min(p + 1, pageCount - 1))}
               disabled={page === pageCount - 1}

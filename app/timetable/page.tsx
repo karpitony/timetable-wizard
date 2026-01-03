@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { getAllTimetables, updateTimetable, deleteTimetable } from "@/lib/indexed-db-model";
-import TimeTable from "@/components/TimeTable";
+import { useEffect, useState } from 'react';
+import { getAllTimetables, updateTimetable, deleteTimetable } from '@/lib/indexed-db-model';
+import TimeTable from '@/components/TimeTable';
 import CourseSearchModal from '@/components/Wizard/CourseSearchModal';
-import { TimetableData } from "@/types/model";
-import CourseTable from "@/components/Wizard/CourseTable";
+import { TimetableData } from '@/types/model';
+import CourseTable from '@/components/Wizard/CourseTable';
 import { useCourses } from '@/hooks/useCourses';
-import { Course } from "@/types/data";
-import { hasAnyConflict } from "@/lib/has-conflict";
-import { Trash2Icon } from "lucide-react";
+import { Course } from '@/types/data';
+import { hasAnyConflict } from '@/lib/has-conflict';
+import { Trash2Icon } from 'lucide-react';
 
 export default function TimetablePage() {
   const [timetables, setTimetables] = useState<TimetableData[]>([]);
@@ -28,9 +28,9 @@ export default function TimetablePage() {
 
   // 시간표 삭제
   const handleDelete = async (id: string) => {
-    if (!confirm("정말 삭제하시겠습니까?")) return;
+    if (!confirm('정말 삭제하시겠습니까?')) return;
     await deleteTimetable(id);
-    setTimetables((prev) => prev.filter((t) => t.id !== id));
+    setTimetables(prev => prev.filter(t => t.id !== id));
     if (selected?.id === id) setSelected(null);
   };
 
@@ -38,7 +38,7 @@ export default function TimetablePage() {
     if (!selected) return;
 
     if (hasAnyConflict([...selected.data.map(t => t.timeSlots), course.timeSlots])) {
-      alert("이미 시간표에 있는 수업과 시간이 겹칩니다.");
+      alert('이미 시간표에 있는 수업과 시간이 겹칩니다.');
       return;
     }
 
@@ -49,11 +49,8 @@ export default function TimetablePage() {
 
     // 3. 상태 반영
     setSelected(updated);
-    setTimetables((prev) =>
-      prev.map((t) => (t.id === updated.id ? updated : t))
-    );
+    setTimetables(prev => prev.map(t => (t.id === updated.id ? updated : t)));
   };
-
 
   if (loading) return <div>불러오는 중...</div>;
 
@@ -65,18 +62,12 @@ export default function TimetablePage() {
         <div>
           {timetables.length === 0 && <p>저장된 시간표가 없습니다.</p>}
           <ul>
-            {timetables.map((tt) => (
+            {timetables.map(tt => (
               <li key={tt.id} className="flex justify-between items-center py-2 border-b">
-                <button
-                  className="text-blue-600 underline text-xl"
-                  onClick={() => setSelected(tt)}
-                >
+                <button className="text-blue-600 underline text-xl" onClick={() => setSelected(tt)}>
                   {tt.id}
                 </button>
-                <button
-                  className="text-red-600"
-                  onClick={() => handleDelete(tt.id)}
-                >
+                <button className="text-red-600" onClick={() => handleDelete(tt.id)}>
                   <Trash2Icon />
                 </button>
               </li>
@@ -85,10 +76,7 @@ export default function TimetablePage() {
         </div>
       ) : (
         <div>
-          <button
-            className="mb-4 btn btn-secondary"
-            onClick={() => setSelected(null)}
-          >
+          <button className="mb-4 btn btn-secondary" onClick={() => setSelected(null)}>
             ← 뒤로가기
           </button>
 
@@ -97,13 +85,13 @@ export default function TimetablePage() {
           <CourseTable
             courses={selected.data}
             buttonType="remove"
-            removeCourse={(courseId) => {
-              const updated = selected.data.filter((c) => c.id !== courseId);
+            removeCourse={courseId => {
+              const updated = selected.data.filter(c => c.id !== courseId);
               const updatedTimetable = { ...selected, data: updated };
               updateTimetable(updatedTimetable);
               setSelected(updatedTimetable);
-              setTimetables((prev) =>
-                prev.map((t) => (t.id === updatedTimetable.id ? updatedTimetable : t))
+              setTimetables(prev =>
+                prev.map(t => (t.id === updatedTimetable.id ? updatedTimetable : t)),
               );
             }}
           />
@@ -113,10 +101,7 @@ export default function TimetablePage() {
             {error && <p className="text-red-500">과목 목록 불러오기 실패: {error}</p>}
 
             {!isLoading && !error && allCourses && (
-              <CourseSearchModal
-                allCourses={allCourses}
-                onSelect={handleAddCourse}
-              />
+              <CourseSearchModal allCourses={allCourses} onSelect={handleAddCourse} />
             )}
           </div>
         </div>

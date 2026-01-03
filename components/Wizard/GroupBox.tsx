@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { Course } from '@/types/data';
@@ -12,7 +7,6 @@ import { useCourses } from '@/hooks/useCourses';
 import CourseSearchModal from '@/components/Wizard/CourseSearchModal';
 import CourseTable from '@/components/Wizard/CourseTable';
 
-
 interface GroupBoxProps {
   group: GroupData;
   groupIndex: number;
@@ -20,12 +14,7 @@ interface GroupBoxProps {
   updateGroupCourses: (groupId: string, newCourses: Course[]) => void;
 }
 
-function GroupBox ({ 
-  group,
-  groupIndex,
-  removeGroup,
-  updateGroupCourses
-}: GroupBoxProps) {
+function GroupBox({ group, groupIndex, removeGroup, updateGroupCourses }: GroupBoxProps) {
   const { allCourses, isLoading, error } = useCourses();
   const courses = group.data || [];
 
@@ -45,9 +34,7 @@ function GroupBox ({
   return (
     <Card className="mb-6 shadow-lg">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-orange-500 text-lg">
-          그룹 {groupIndex + 1}
-        </CardTitle>
+        <CardTitle className="text-orange-500 text-lg">그룹 {groupIndex + 1}</CardTitle>
         <Button
           variant="ghost"
           className="text-orange-500 hover:text-red-500"
@@ -60,24 +47,17 @@ function GroupBox ({
 
       <CardContent>
         {courses.length > 0 ? (
-          <CourseTable
-            courses={courses}
-            buttonType="remove"
-            removeCourse={removeCourse}
-          />
+          <CourseTable courses={courses} buttonType="remove" removeCourse={removeCourse} />
         ) : (
           <p className="text-sm text-gray-500 text-center py-4">과목이 없습니다.</p>
         )}
 
         <div className="flex justify-center mt-4">
-          <CourseSearchModal
-            allCourses={allCourses}
-            onSelect={addCourse}
-          />
+          <CourseSearchModal allCourses={allCourses} onSelect={addCourse} />
         </div>
       </CardContent>
     </Card>
   );
-};
+}
 
 export default GroupBox;

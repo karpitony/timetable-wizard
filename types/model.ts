@@ -1,4 +1,4 @@
-import { Course } from "@/types/data";
+import { Course } from '@/types/data';
 
 export interface GroupData {
   id: string;

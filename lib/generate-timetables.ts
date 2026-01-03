@@ -1,7 +1,7 @@
-import { GroupData } from "@/types/group";
-import { Course } from "@/types/data";
-import { hasAnyConflict } from "@/lib/has-conflict";
-import { scoreTimetable } from "@/lib/score-timetable";
+import { GroupData } from '@/types/group';
+import { Course } from '@/types/data';
+import { hasAnyConflict } from '@/lib/has-conflict';
+import { scoreTimetable } from '@/lib/score-timetable';
 
 export function generateCombinations<T>(groups: T[][]): T[][] {
   if (groups.length === 0) return [];
@@ -16,7 +16,7 @@ export function generateCombinations<T>(groups: T[][]): T[][] {
       }
       return newCombos;
     },
-    [[]] // 초기값: 빈 조합 하나
+    [[]], // 초기값: 빈 조합 하나
   );
 }
 

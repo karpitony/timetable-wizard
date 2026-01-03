@@ -1,15 +1,15 @@
 'use client';
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import GroupBox from "@/components/Wizard/GroupBox";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import GroupBox from '@/components/Wizard/GroupBox';
 import { GroupData } from '@/types/group';
 import { Course } from '@/types/data';
-import { 
+import {
   addGroup as addGroupToDB,
   updateGroup as updateGroupInDB,
   deleteGroup as deleteGroupFromDB,
-  getAllGroups 
-} from "@/lib/indexed-db-model";
+  getAllGroups,
+} from '@/lib/indexed-db-model';
 
 const Wizard = () => {
   const [groups, setGroups] = useState<GroupData[]>([]);
@@ -34,13 +34,13 @@ const Wizard = () => {
   };
 
   const updateGroupCourses = (groupId: string, newCourses: Course[]) => {
-    setGroups(prev => prev.map(g => g.id === groupId ? { ...g, data: newCourses } : g));
+    setGroups(prev => prev.map(g => (g.id === groupId ? { ...g, data: newCourses } : g)));
     updateGroupInDB({ id: groupId, data: newCourses });
   };
 
   const removeGroup = async (groupId: string) => {
-    if (confirm("정말로 그룹을 삭제하시겠습니까?")) {
-      setGroups(groups.filter((group) => group.id !== groupId));
+    if (confirm('정말로 그룹을 삭제하시겠습니까?')) {
+      setGroups(groups.filter(group => group.id !== groupId));
       await deleteGroupFromDB(groupId);
     }
   };
@@ -49,7 +49,8 @@ const Wizard = () => {
     <section className="p-4 min-h-screen max-w-3xl mx-auto">
       <h2 className="text-3xl font-bold">시간표 마법사</h2>
       <p className="mt-2 text-lg">
-        여러 개의 그룹을 만들어 각 그룹에 과목을 추가하세요. 각 그룹에서 하나의 수업을 골라 시간표를 생성합니다.
+        여러 개의 그룹을 만들어 각 그룹에 과목을 추가하세요. 각 그룹에서 하나의 수업을 골라 시간표를
+        생성합니다.
       </p>
 
       <div className="w-full mt-10">

@@ -32,24 +32,21 @@ export function useCourses() {
 
     // fetch 진행
     fetch('/parsedData.json')
-      .then((res) => {
+      .then(res => {
         if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
         return res.json();
       })
       .then((data: Course[]) => {
         setCourses(data);
-        localStorage.setItem(
-          LOCAL_STORAGE_KEY,
-          JSON.stringify({ timestamp: Date.now(), data })
-        );
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
         setError('강의 데이터를 불러오는 중 오류가 발생했습니다.');
       });
   }, []);
 
-  return { 
+  return {
     allCourses: courses,
     isLoading: courses === null,
     error,
