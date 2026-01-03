@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Course } from '@/types/data';
 
-const CACHE_VERSION = 1;
+const CACHE_VERSION = 2;
 const CACHE_KEY = `courses@2026-1@v${CACHE_VERSION}`;
 const CACHE_TTL = 1000 * 60 * 60; // 1시간
 

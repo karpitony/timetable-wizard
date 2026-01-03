@@ -17,6 +17,7 @@ export type Course = {
   timeSlots: Schedule[]; // 배열로, 월수 2회 수업 등
   fullParticipant?: number; // 전체 수강신청 가능 인원
   currentParticipant?: number; // 현재 수강신청 인원
+  memo: string | null; // 비고
 };
 
 export type CourseGroup = Course[];

@@ -9,15 +9,8 @@ const PAGE_INCREMENT = 30;
 const IS_COMPETITION_ENABLED = false; // 강의 경쟁률 기능 활성화 여부
 
 export default function CourseCompetitionPage() {
-  if (!IS_COMPETITION_ENABLED)
-    return (
-      <div className="max-w-4xl mx-auto p-4 min-h-[80vh]">
-        <h1 className="text-2xl font-bold mb-4">강의 경쟁률</h1>
-        <p>현재 강의 경쟁률 정보는 제공되지 않습니다. 곧 업데이트될 예정입니다.</p>
-      </div>
-    );
-
   const { allCourses, isLoading, error } = useCourses();
+
   const [myCourses, setMyCourses] = useState<Course[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -60,6 +53,14 @@ export default function CourseCompetitionPage() {
     setMyCourses(prev => prev.filter(c => c.id !== courseId));
     await deleteMyCourse(courseId);
   };
+
+  if (!IS_COMPETITION_ENABLED)
+    return (
+      <div className="max-w-4xl mx-auto p-4 min-h-[80vh]">
+        <h1 className="text-2xl font-bold mb-4">강의 경쟁률</h1>
+        <p>현재 강의 경쟁률 정보는 제공되지 않습니다. 곧 업데이트될 예정입니다.</p>
+      </div>
+    );
 
   return (
     <div className="max-w-4xl mx-auto p-4 min-h-[80vh]">

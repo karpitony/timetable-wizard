@@ -22,7 +22,7 @@ interface Props {
 
 export default function CourseSearchModal({ allCourses, onSelect }: Props) {
   const [query, setQuery] = useState('');
-  if (!allCourses) return null;
+
   const filtered = allCourses.filter(
     c =>
       c.sbjName.toLowerCase().includes(query.toLowerCase()) ||
@@ -38,6 +38,8 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
     estimateSize: () => 80, // 각 item 높이 추정값 (px)
     overscan: 10,
   });
+
+  if (!allCourses) return null;
 
   return (
     <Dialog>
@@ -85,6 +87,9 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
                       )
                       .join(', ')}
                   </div>
+                  {course.memo && (
+                    <div className="text-sm text-muted-foreground">{course.memo}</div>
+                  )}
                 </li>
               );
             })}

@@ -90,6 +90,7 @@ const RawCourseItemAdapter: CourseAdapter<RawCourseItem> = {
       timeSlots: parseSchedule(raw.TMTBL_DSC ?? '') || [],
       fullParticipant: raw.ALL_FULL_PCNT ?? undefined,
       currentParticipant: raw.TKCRS_PCNT ?? undefined,
+      memo: raw.REMK || null,
     };
   },
 };
@@ -105,6 +106,7 @@ const ClassTimetableAdapter: CourseAdapter<RawClassTimetable> = {
       timeSlots: parseDCS(raw.DSC),
       fullParticipant: raw.ALL_FULL_PCNT ?? undefined,
       currentParticipant: raw.TKCRS_PCNT ?? undefined,
+      memo: raw.REMK_DSC || null,
     };
   },
 };
@@ -119,6 +121,7 @@ export function parseRawCourse(raw: RawCourseItem): Course {
     timeSlots: parseSchedule(raw.TMTBL_DSC ?? '') || [],
     fullParticipant: raw.ALL_FULL_PCNT ?? undefined,
     currentParticipant: raw.TKCRS_PCNT ?? undefined,
+    memo: raw.REMK || null,
   };
 }
 
