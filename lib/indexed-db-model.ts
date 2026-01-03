@@ -1,11 +1,12 @@
 import { Course } from '@/types/data';
 import { GroupData, TimetableData } from '@/types/model';
-
-const DB_NAME = 'TimetableDB';
-const DB_VERSION = 2;
-const GROUP_STORE = 'groups';
-const TIMETABLE_STORE = 'timetables';
-const MY_COURSE_COMPETITION_STORE = 'myCourseCompetition';
+import {
+  DB_NAME,
+  DB_VERSION,
+  GROUP_STORE,
+  TIMETABLE_STORE,
+  MY_COURSE_COMPETITION_STORE,
+} from '@/constants/storage';
 
 let db: IDBDatabase | null = null;
 

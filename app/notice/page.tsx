@@ -1,5 +1,14 @@
 const notices = [
   {
+    id: 3,
+    title: '2026년 1학기 시간표 데이터 업데이트',
+    date: '2026-01-04',
+    content:
+      '2026년 1학기 시간표 데이터가 업데이트되었습니다.\n ' +
+      'ndrims의 강의실별시간표조회 데이터로 최종 시간표와 차이가 있을 수 있습니다.\n\n' +
+      '사용해주셔서 감사하고, 새해 복 많이 받으세요! :)',
+  },
+  {
     id: 2,
     title: '경쟁률 보기 개선 및 즐겨찾기 기능 추가',
     date: '2025-07-22',
@@ -30,7 +39,7 @@ export default function NoticePage() {
       {notices.length === 0 ? (
         <p>새로운 공지사항이 없어요! 곧 좋은 소식으로 찾아뵙겠습니다 :)</p>
       ) : (
-        <ul className="space-y-4 max-h-[60vh] overflow-auto">
+        <ul className="space-y-4 min-h-[60vh] overflow-auto">
           {notices.map(({ id, title, date, content }) => (
             <li key={id} className="border p-4 rounded shadow-sm">
               <h2 className="font-semibold text-lg">{title}</h2>

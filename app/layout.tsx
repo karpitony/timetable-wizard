@@ -5,7 +5,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import NoticeAlert from '@/components/NoticeAlert';
+// import NoticeAlert from '@/components/NoticeAlert';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -38,10 +38,10 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Header />
-        <NoticeAlert
+        {/* <NoticeAlert
           message="도움이 되셨다면 GitHub에 별⭐️을 눌러주세요. 큰 힘이 됩니다!"
           href="https://github.com/karpitony/timetable-wizard"
-        />
+        /> */}
         <main>{children}</main>
         <Footer />
         {/* Analytics */}

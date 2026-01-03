@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Course } from '@/types/data';
-
-const CACHE_VERSION = 2;
-const CACHE_KEY = `courses@2026-1@v${CACHE_VERSION}`;
-const CACHE_TTL = 1000 * 60 * 60; // 1시간
+import { CACHE_KEY, CACHE_TTL, CACHE_VERSION } from '@/constants/storage';
 
 type CachedCourses = {
-  version: number;
   timestamp: number;
   data: Course[];
 };
@@ -23,7 +19,6 @@ function loadCache(): CachedCourses | null {
 
 function saveCache(data: Course[]) {
   const payload: CachedCourses = {
-    version: CACHE_VERSION,
     timestamp: Date.now(),
     data,
   };

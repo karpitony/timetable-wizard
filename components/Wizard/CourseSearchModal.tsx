@@ -59,7 +59,7 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
           className="mt-4"
         />
 
-        <ul ref={parentRef} className="relative h-[50vh] md:h-[70vh] overflow-auto">
+        <ul ref={parentRef} className="relative h-[60vh] md:h-[70vh] overflow-auto">
           <div style={{ height: rowVirtualizer.getTotalSize(), position: 'relative' }}>
             {rowVirtualizer.getVirtualItems().map(virtualRow => {
               const course = filtered[virtualRow.index];
@@ -75,10 +75,10 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
                     height: `${virtualRow.size}px`,
                   }}
                 >
-                  <div className="font-medium">
+                  <div className="font-medium text-sm md:text-base">
                     {course.sbjName} ({course.id})
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs md:text-sm text-muted-foreground">
                     {course.instructor} |{' '}
                     {course.timeSlots
                       .map(
@@ -87,9 +87,9 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
                       )
                       .join(', ')}
                   </div>
-                  {course.memo && (
-                    <div className="text-sm text-muted-foreground">{course.memo}</div>
-                  )}
+                  <div className="text-xs md:text-sm text-muted-foreground mt-1">
+                    {course.memo || '-'}
+                  </div>
                 </li>
               );
             })}

@@ -27,7 +27,7 @@ export default function Header() {
         {/* 모바일 메뉴 버튼 */}
         <button
           className="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-ring"
-          onClick={() => setOpen(!open)}
+          onClick={() => setOpen(prev => !prev)}
         >
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -44,7 +44,12 @@ export default function Header() {
       {open && (
         <nav className="md:hidden flex flex-col gap-2 px-4 pb-4">
           {NAV_ITEMS.map(item => (
-            <NavLink key={item.href} href={item.href} text={item.text} />
+            <NavLink
+              key={item.href}
+              href={item.href}
+              text={item.text}
+              onClick={() => setOpen(false)}
+            />
           ))}
         </nav>
       )}
@@ -52,11 +57,12 @@ export default function Header() {
   );
 }
 
-function NavLink({ href, text }: { href: string; text: string }) {
+function NavLink({ href, text, onClick }: { href: string; text: string; onClick?: () => void }) {
   return (
     <Link
       href={href}
       className="text-base font-medium hover:bg-gray-200 px-3 py-2 rounded-md transition-colors"
+      onClick={onClick}
     >
       {text}
     </Link>

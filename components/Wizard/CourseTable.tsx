@@ -31,18 +31,18 @@ export default function CourseTable({
         <TableRow>
           <TableHead>학수번호</TableHead>
           <TableHead>과목명</TableHead>
-          <TableHead className="w-[80px]">교수명</TableHead>
+          <TableHead className="w-20">교수명</TableHead>
           <TableHead>시간</TableHead>
           {!isCompetitionEnabled && <TableHead className="hidden md:table-cell">장소</TableHead>}
           {isCompetitionEnabled && (
             <>
-              <TableHead className="w-[60px] text-center">신청자 수</TableHead>
-              <TableHead className="w-[60px] text-center">정원</TableHead>
-              <TableHead className="w-[60px] text-center">경쟁률</TableHead>
+              <TableHead className="w-15 text-center">신청자 수</TableHead>
+              <TableHead className="w-15 text-center">정원</TableHead>
+              <TableHead className="w-15 text-center">경쟁률</TableHead>
             </>
           )}
-          {buttonType === 'remove' && <TableHead className="w-[60px] text-center">삭제</TableHead>}
-          {buttonType === 'add' && <TableHead className="w-[60px] text-center">추가</TableHead>}
+          {buttonType === 'remove' && <TableHead className="w-15 text-center">삭제</TableHead>}
+          {buttonType === 'add' && <TableHead className="w-15 text-center">추가</TableHead>}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -66,9 +66,9 @@ export default function CourseTable({
             )}
             {isCompetitionEnabled && (
               <>
-                <TableHead className="w-[60px] text-center">{course.currentParticipant}</TableHead>
-                <TableHead className="w-[60px] text-center">{course.fullParticipant}</TableHead>
-                <TableHead className="w-[60px] text-center">
+                <TableHead className="w-15 text-center">{course.currentParticipant}</TableHead>
+                <TableHead className="w-15 text-center">{course.fullParticipant}</TableHead>
+                <TableHead className="w-15 text-center">
                   {course.fullParticipant && course.currentParticipant
                     ? (course.currentParticipant / course.fullParticipant).toFixed(2)
                     : 'error'}
