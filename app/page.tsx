@@ -47,6 +47,7 @@ const dummyCourses: Course[] = [
       { day: '월', startMinutes: 540, endMinutes: 630, periodStart: '2', periodEnd: '3' }, // 09:00 ~ 10:30
       { day: '수', startMinutes: 540, endMinutes: 630, periodStart: '2', periodEnd: '3' }, // 09:00 ~ 10:30
     ],
+    memo: null,
   },
   {
     id: 'CSE1010-02',
@@ -58,6 +59,7 @@ const dummyCourses: Course[] = [
       { day: '화', startMinutes: 600, endMinutes: 690, periodStart: '3', periodEnd: '4' }, // 10:00 ~ 11:30
       { day: '목', startMinutes: 600, endMinutes: 690, periodStart: '3', periodEnd: '4' }, // 10:00 ~ 11:30
     ],
+    memo: null,
   },
   {
     id: 'ENG1234-01',
@@ -68,6 +70,7 @@ const dummyCourses: Course[] = [
     timeSlots: [
       { day: '금', startMinutes: 780, endMinutes: 870, periodStart: '6', periodEnd: '7' }, // 13:00 ~ 14:30
     ],
+    memo: null,
   },
   {
     id: 'MTH1101-01',
@@ -79,6 +82,7 @@ const dummyCourses: Course[] = [
       { day: '월', startMinutes: 690, endMinutes: 780, periodStart: '4', periodEnd: '5' }, // 11:30 ~ 13:00
       { day: '수', startMinutes: 690, endMinutes: 780, periodStart: '4', periodEnd: '5' }, // 11:30 ~ 13:00
     ],
+    memo: null,
   },
   {
     id: 'PHY1001-01',
@@ -89,5 +93,6 @@ const dummyCourses: Course[] = [
     timeSlots: [
       { day: '목', startMinutes: 810, endMinutes: 960, periodStart: '7', periodEnd: '9' }, // 13:30 ~ 16:00
     ],
+    memo: null,
   },
 ];
