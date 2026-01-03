@@ -1,0 +1,44 @@
+{
+  "dsMain": [
+    {
+      "LEC_CHAIR": "45",
+      "CURI_CD_NM": "석사과정",
+      "SBJ_NO": "COS6009",
+      "SBJ_NM": "정치캠페인연구",
+      "REMK_DSC": "부디스트비즈니스학과 전용 (미디어커뮤니케이션학과생 수강불가)",
+      "TKCRS_PCNT1": 0,
+      "ALL_FULL_PCNT": 0,
+      "TKCRS_PCNT2": 0,
+      "ROOM_NM": "(충무로 영상센터 601-227 강의실)",
+      "DEPT_NM": "미디어커뮤니케이션학과",
+      "ROOM_CD": "SC0601FL02027",
+      "CDT": "3.0",
+      "DSC": "03-03~06-15 월 18:00-21:05",
+      "OBJ_SCHGRD_NM": "전체학기",
+      "PROF_KOR_DSC": "현경보",
+      "BD_CD": "SC0601",
+      "DVCLS": "01",
+      "TKCRS_PCNT": 0
+    },
+    {
+      "LEC_CHAIR": null,
+      "CURI_CD_NM": "일교",
+      "SBJ_NO": "EGC7113",
+      "SBJ_NM": "전통등문화의이해(연등회등문화전승전통등만들기)",
+      "REMK_DSC": null,
+      "TKCRS_PCNT1": 0,
+      "ALL_FULL_PCNT": null,
+      "TKCRS_PCNT2": 0,
+      "ROOM_NM": "(충무로 영상센터 601-501 연등회보존회)",
+      "DEPT_NM": "불교학부",
+      "ROOM_CD": "SC0601FL05001",
+      "CDT": "2.0",
+      "DSC": "03-03~06-15 수 16:00-18:00",
+      "OBJ_SCHGRD_NM": "전체학년",
+      "PROF_KOR_DSC": "강문정",
+      "BD_CD": "SC0601",
+      "DVCLS": "01",
+      "TKCRS_PCNT": 0
+    }
+  ]
+}
