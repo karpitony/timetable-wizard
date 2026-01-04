@@ -1,8 +1,9 @@
+import { useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { Course } from '@/types/data';
-import { GroupData } from '@/types/group';
+import { GroupData } from '@/types/model';
 import { useCourses } from '@/hooks/useCourses';
 import CourseSearchModal from '@/components/Wizard/CourseSearchModal';
 import CourseTable from '@/components/Wizard/CourseTable';
@@ -11,22 +12,32 @@ interface GroupBoxProps {
   group: GroupData;
   groupIndex: number;
   removeGroup: (groupId: string) => void;
-  updateGroupCourses: (groupId: string, newCourses: Course[]) => void;
+  updateGroupCourses: (groupId: string, lectureKeys: string[]) => void;
 }
 
 function GroupBox({ group, groupIndex, removeGroup, updateGroupCourses }: GroupBoxProps) {
   const { allCourses, isLoading, error } = useCourses();
-  const courses = group.data || [];
+
+  const courseMap = useMemo(() => {
+    if (!allCourses) return new Map<string, Course>();
+    return new Map(allCourses.map(c => [c.id, c]));
+  }, [allCourses]);
+
+  const lectureKeys = group.data ?? [];
+
+  const courses: Course[] = lectureKeys.map(key => courseMap.get(key)).filter(Boolean) as Course[];
 
   const addCourse = (course: Course) => {
-    if (courses.find(c => c.id === course.id)) return;
-    const updated = [...courses, course];
-    updateGroupCourses(group.id, updated);
+    const key = course.id; // or `${course.sbjNo}-${course.dvcls}`
+    if (lectureKeys.includes(key)) return;
+    updateGroupCourses(group.id, [...lectureKeys, key]);
   };
 
   const removeCourse = (courseId: string) => {
-    const updated = courses.filter(course => course.id !== courseId);
-    updateGroupCourses(group.id, updated);
+    updateGroupCourses(
+      group.id,
+      lectureKeys.filter(key => key !== courseId),
+    );
   };
 
   if (isLoading || !allCourses) return <p>과목 목록을 불러오는 중...</p>;

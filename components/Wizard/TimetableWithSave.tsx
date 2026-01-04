@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { addTimetable } from '@/lib/indexed-db-model';
 import { Course } from '@/types/data';
+import { LAST_UPDATE_STRING } from '@/constants/storage';
 
 interface TimetableWithSaveProps {
   courses: Course[];
@@ -20,7 +21,8 @@ export default function TimetableWithSave({ courses }: TimetableWithSaveProps) {
     }
     setSaving(true);
     try {
-      await addTimetable({ id: name.trim(), data: courses });
+      const keys = courses.map(c => c.id);
+      await addTimetable({ id: name.trim(), updatedAt: LAST_UPDATE_STRING, data: keys });
       alert(`"${name}" 시간표가 저장되었습니다.`);
       setName('');
       setShowInput(false); // 저장 완료 후 입력창 숨기기

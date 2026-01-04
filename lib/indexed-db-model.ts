@@ -158,7 +158,7 @@ export async function deleteTimetable(id: string): Promise<void> {
   });
 }
 
-export async function getAllMyCourses(): Promise<Course[]> {
+export async function getAllMyCourses(): Promise<string[]> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
     const tx = database.transaction(MY_COURSE_COMPETITION_STORE, 'readonly');
@@ -170,7 +170,7 @@ export async function getAllMyCourses(): Promise<Course[]> {
   });
 }
 
-export async function saveMyCourse(course: Course): Promise<void> {
+export async function saveMyCourse(course: string): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
     const tx = database.transaction(MY_COURSE_COMPETITION_STORE, 'readwrite');

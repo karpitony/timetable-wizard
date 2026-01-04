@@ -7,7 +7,7 @@ import { Menu, X } from 'lucide-react';
 const NAV_ITEMS = [
   { href: '/', text: '홈' },
   { href: '/wizard', text: '마법사 시작' },
-  { href: '/timetable', text: '내 시간표 보기' },
+  { href: '/timetables', text: '내 시간표 보기' },
   { href: '/course-competition', text: '강의 경쟁률' },
   { href: '/notice', text: '공지사항' },
 ];

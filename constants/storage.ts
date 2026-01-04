@@ -1,7 +1,8 @@
 export const LAST_UPDATE: Date = new Date('2025-01-04T00:00:00Z');
+export const LAST_UPDATE_STRING: string = LAST_UPDATE.toISOString();
 
 // parsedData.json 캐싱 관련 상수
-export const CACHE_VERSION = LAST_UPDATE.toISOString();
+export const CACHE_VERSION = LAST_UPDATE_STRING;
 export const CACHE_KEY = `courses@2026-1@v${CACHE_VERSION}`;
 export const CACHE_TTL = 1000 * 60 * 60; // 1시간
 

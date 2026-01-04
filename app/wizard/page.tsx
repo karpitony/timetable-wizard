@@ -2,15 +2,14 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import GroupBox from '@/components/Wizard/GroupBox';
-import { GroupData } from '@/types/group';
-import { Course } from '@/types/data';
+import { GroupData } from '@/types/model';
 import {
   addGroup as addGroupToDB,
   updateGroup as updateGroupInDB,
   deleteGroup as deleteGroupFromDB,
   getAllGroups,
 } from '@/lib/indexed-db-model';
-import { LAST_UPDATE } from '@/constants/storage';
+import { LAST_UPDATE, LAST_UPDATE_STRING } from '@/constants/storage';
 
 const Wizard = () => {
   const [groups, setGroups] = useState<GroupData[]>([]);
@@ -24,19 +23,28 @@ const Wizard = () => {
   }, []);
 
   const addGroup = async () => {
-    const newId = Date.now().toString();
     const newGroup: GroupData = {
-      id: newId,
-      data: [], // 빈 과목 배열로 시작
+      id: Date.now().toString(),
+      updatedAt: LAST_UPDATE_STRING,
+      data: [],
     };
 
-    setGroups([...groups, newGroup]);
+    setGroups(prev => [...prev, newGroup]);
     await addGroupToDB(newGroup);
   };
 
-  const updateGroupCourses = (groupId: string, newCourses: Course[]) => {
-    setGroups(prev => prev.map(g => (g.id === groupId ? { ...g, data: newCourses } : g)));
-    updateGroupInDB({ id: groupId, data: newCourses });
+  const updateGroupCourses = (groupId: string, lectureKeys: string[]) => {
+    setGroups(prev =>
+      prev.map(g =>
+        g.id === groupId ? { ...g, data: lectureKeys, updatedAt: LAST_UPDATE_STRING } : g,
+      ),
+    );
+
+    updateGroupInDB({
+      id: groupId,
+      data: lectureKeys,
+      updatedAt: LAST_UPDATE_STRING,
+    });
   };
 
   const removeGroup = async (groupId: string) => {

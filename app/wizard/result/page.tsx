@@ -1,25 +1,49 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { Course } from '@/types/data';
+import { GroupData } from '@/types/model';
+import { useCourses } from '@/hooks/useCourses';
 import { useTimetables } from '@/hooks/useTimetables';
 import { getAllGroups } from '@/lib/indexed-db-model';
 import Timetable from '@/components/TimeTable';
 
 const PAGE_SIZE = 10;
 
+function hydrateGroups(groups: GroupData[], courseMap: Map<string, Course>) {
+  return groups.map(group => ({
+    ...group,
+    data: (group.data ?? []).map(key => courseMap.get(key)).filter(Boolean), // 폐강 과목 자동 제거
+  }));
+}
+
 export default function ResultPage() {
-  const { generate, timetables, isLoading, error } = useTimetables();
+  const { allCourses, isLoading: coursesLoading, error: coursesError } = useCourses();
+  const {
+    generate,
+    timetables,
+    isLoading: timetablesLoading,
+    error: timetablesError,
+  } = useTimetables();
+
   const [loadingMessage, setLoadingMessage] = useState('');
   const [page, setPage] = useState(0);
 
+  const courseMap = useMemo(() => {
+    if (!allCourses) return new Map<string, Course>();
+    return new Map(allCourses.map(c => [c.id, c]));
+  }, [allCourses]);
+
   useEffect(() => {
+    if (!allCourses) return;
     (async () => {
-      const groups = await getAllGroups();
+      const rawGroups = await getAllGroups();
       setLoadingMessage('시간표를 생성 중입니다...');
-      await generate(groups);
+      const hydratedGroups = hydrateGroups(rawGroups, courseMap);
+      await generate(hydratedGroups);
       setLoadingMessage('');
     })();
-  }, [generate]);
+  }, [allCourses, generate]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -32,10 +56,10 @@ export default function ResultPage() {
     <div className="p-2 md:p-4 min-h-screen max-w-3xl mx-auto">
       <h2 className="font-bold text-3xl mb-4">결과 페이지</h2>
 
-      {isLoading && <p className="text-blue-500">{loadingMessage}</p>}
-      {error && <p className="text-red-500">오류: {error}</p>}
+      {coursesLoading && <p className="text-blue-500">{loadingMessage}</p>}
+      {coursesError && <p className="text-red-500">오류: {coursesError}</p>}
 
-      {!isLoading && !error && (
+      {!coursesLoading && !coursesError && !timetablesLoading && !timetablesError && (
         <>
           <p className="mb-2">{timetables.length}개의 시간표가 만들어졌습니다.</p>
           <p className="text-sm text-gray-600 mb-6">
