@@ -1,4 +1,3 @@
-import { Course } from '@/types/data';
 import { GroupData, TimetableData } from '@/types/model';
 import {
   DB_NAME,

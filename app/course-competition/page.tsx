@@ -8,6 +8,11 @@ import { getAllMyCourses, saveMyCourse, deleteMyCourse } from '@/lib/indexed-db-
 const PAGE_INCREMENT = 30;
 const IS_COMPETITION_ENABLED = false; // 강의 경쟁률 기능 활성화 여부
 
+/**
+ * 강의 경쟁률 페이지
+ * indexedDB 구조변경 외래키 작업 하면서 뭔가 땜빵을 했어서 경쟁률 오픈전 점검 한번더
+ */
+
 export default function CourseCompetitionPage() {
   const { allCourses, isLoading, error } = useCourses();
 
@@ -36,16 +41,23 @@ export default function CourseCompetitionPage() {
   useEffect(() => {
     const loadMyCourses = async () => {
       const stored = await getAllMyCourses();
-      setMyCourses(stored);
+      const storedCourses: Course[] = [];
+      if (allCourses) {
+        for (const sc of stored) {
+          const course = allCourses.find(c => c.id === sc);
+          if (course) storedCourses.push(course);
+        }
+      }
+      setMyCourses(storedCourses);
     };
     loadMyCourses();
-  }, []);
+  }, [allCourses]);
 
   // 즐겨찾기 추가 (중복 방지)
   const addToFavorites = async (course: Course) => {
     if (myCourses.find(c => c.id === course.id)) return;
     setMyCourses(prev => [...prev, course]);
-    await saveMyCourse(course);
+    await saveMyCourse(course.id);
   };
 
   // 즐겨찾기에서 제거

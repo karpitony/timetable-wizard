@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GroupData } from '@/types/group';
+import { CourseGroupData } from '@/types/model';
 import { Course } from '@/types/data';
 import { generateTimetables } from '@/lib/generate-timetables';
 
@@ -13,7 +13,7 @@ export function useTimetables() {
   const [timetables, setTimetables] = useState<TimetableResult[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const generate = async (groups: GroupData[]) => {
+  const generate = async (groups: CourseGroupData[]) => {
     setIsLoading(true);
     setError(null);
 

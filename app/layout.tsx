@@ -3,10 +3,11 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
+import ProgressBar from '@/app/_Provider/ProgressBar';
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import ProgressBar from '@/app/_Provider/ProgressBar';
-// import NoticeAlert from '@/components/NoticeAlert';
+import TimetableIntegrityGate from '@/components/Wizard/TimetableIntegrityGate';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -40,6 +41,7 @@ export default function RootLayout({
       <body className={`font-pretendard ${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ProgressBar>
           <Header />
+          <TimetableIntegrityGate />
           {/* <NoticeAlert
           message="도움이 되셨다면 GitHub에 별⭐️을 눌러주세요. 큰 힘이 됩니다!"
           href="https://github.com/karpitony/timetable-wizard"

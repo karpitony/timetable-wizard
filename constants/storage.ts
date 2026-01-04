@@ -1,4 +1,8 @@
-export const LAST_UPDATE: Date = new Date('2025-01-04T00:00:00Z');
+function dateFromKST(y: number, m: number, d: number, h = 0, min = 0, s = 0) {
+  return new Date(Date.UTC(y, m - 1, d, h - 9, min, s));
+}
+
+export const LAST_UPDATE = dateFromKST(2025, 1, 5, 4, 22, 0); // 2025년 1월 5일 04:22 KST
 export const LAST_UPDATE_STRING: string = LAST_UPDATE.toISOString();
 
 // parsedData.json 캐싱 관련 상수

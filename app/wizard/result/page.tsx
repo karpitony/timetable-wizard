@@ -43,7 +43,7 @@ export default function ResultPage() {
       await generate(hydratedGroups);
       setLoadingMessage('');
     })();
-  }, [allCourses, generate]);
+  }, [allCourses, courseMap, generate]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
