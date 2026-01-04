@@ -5,6 +5,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ProgressBar from '@/app/_Provider/ProgressBar';
 // import NoticeAlert from '@/components/NoticeAlert';
 
 const geistSans = Geist({
@@ -36,14 +37,16 @@ export default function RootLayout({
         />
         <meta name="naver-site-verification" content="6afa6a19c3a3b924d485e2c8379e993526817663" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Header />
-        {/* <NoticeAlert
+      <body className={`font-pretendard ${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ProgressBar>
+          <Header />
+          {/* <NoticeAlert
           message="도움이 되셨다면 GitHub에 별⭐️을 눌러주세요. 큰 힘이 됩니다!"
           href="https://github.com/karpitony/timetable-wizard"
         /> */}
-        <main>{children}</main>
-        <Footer />
+          <main>{children}</main>
+          <Footer />
+        </ProgressBar>
         {/* Analytics */}
         <Analytics />
         <GoogleAnalytics gaId="GT-NC8XXWX3" />

@@ -16,7 +16,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="w-full border-b bg-background text-foreground">
+    <header className="w-full border-b bg-orange-50 text-foreground">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
         {/* 좌측: 로고 */}
         <Link href="/" className="flex items-end space-x-2">
@@ -61,7 +61,7 @@ function NavLink({ href, text, onClick }: { href: string; text: string; onClick?
   return (
     <Link
       href={href}
-      className="text-base font-medium hover:bg-gray-200 px-3 py-2 rounded-md transition-colors"
+      className="text-base font-medium hover:bg-orange-100 px-3 py-2 rounded-md transition-colors"
       onClick={onClick}
     >
       {text}

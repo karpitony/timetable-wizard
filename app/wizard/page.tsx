@@ -10,6 +10,7 @@ import {
   deleteGroup as deleteGroupFromDB,
   getAllGroups,
 } from '@/lib/indexed-db-model';
+import { LAST_UPDATE } from '@/constants/storage';
 
 const Wizard = () => {
   const [groups, setGroups] = useState<GroupData[]>([]);
@@ -45,6 +46,14 @@ const Wizard = () => {
     }
   };
 
+  const lastUpdateStr = LAST_UPDATE.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   return (
     <section className="p-4 min-h-screen max-w-3xl mx-auto">
       <h2 className="text-3xl font-bold">시간표 마법사</h2>
@@ -52,6 +61,7 @@ const Wizard = () => {
         여러 개의 그룹을 만들어 각 그룹에 과목을 추가하세요. 각 그룹에서 하나의 수업을 골라 시간표를
         생성합니다.
       </p>
+      <p className="mt-2">마지막 업데이트: {lastUpdateStr}</p>
 
       <div className="w-full mt-10">
         {groups.map((group, index) => (

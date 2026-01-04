@@ -37,6 +37,18 @@ export default function Footer() {
         <span className="text-lg font-semibold">소스코드</span>
       </Link>
       <p className="text-sm mt-8">Made by Yunseok Song</p>
+      <p className="text-xs mt-2">
+        본 서비스에서 제공하는 강의 시간표 및 경쟁률 정보의 원본 데이터는 동국대학교가 소유하고
+        있습니다.
+      </p>
+      <p className="text-xs">
+        본 사이트는 동국대학교의 공식 서비스가 아니며, 수익을 창출하지 않는 학생 개인
+        프로젝트입니다.
+      </p>
+      <p className="text-xs">
+        제공되는 정보는 참고용이며, 정확한 내용은 학교 공식 시스템을 기준으로 합니다.
+      </p>
+
       <div className="flex items-center mt-4 justify-center gap-6">
         {LINKS.map(link => (
           <Link
