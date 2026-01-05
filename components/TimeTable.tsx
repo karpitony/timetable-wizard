@@ -105,7 +105,7 @@ export default function Timetable({ courses, timetableName }: TimetableProps) {
               return (
                 <tr
                   key={rowIdx}
-                  className={`${isHalfHour ? 'border-t border-gray-300' : ''} h-2 md:h-3.5`}
+                  className={`${isHalfHour ? 'border-t border-gray-300' : ''} h-2.5 md:h-3.5`}
                 >
                   {/* 시간 컬럼 */}
                   {isHourTop && (
@@ -135,19 +135,21 @@ export default function Timetable({ courses, timetableName }: TimetableProps) {
                         <td
                           key={day}
                           rowSpan={rowspan}
-                          className={`border border-gray-300 p-1 text-[10px] md:text-xs align-top ${assignColor(
-                            courseData.id,
-                          )}`}
+                          className={`relative border border-gray-300 p-0 ${assignColor(courseData.id)}`}
                         >
-                          <div className="h-full overflow-hidden flex flex-col">
-                            <h3 className="font-bold text-xs md:text-sm leading-tight shrink-0">
+                          {/* 높이 고정용 더미 */}
+                          <div className="h-full" />
+
+                          {/* 실제 콘텐츠 (레이아웃 계산 제외됨) */}
+                          <div
+                            title={courseData.location}
+                            className="absolute inset-0 overflow-hidden p-1 flex flex-col"
+                          >
+                            <h3 className="shrink-0 font-bold text-xs md:text-sm leading-tight">
                               {infoHidden ? '' : courseData.sbjName}
                             </h3>
 
-                            <p
-                              className="flex-1 whitespace-pre-wrap wrap-break-word overflow-hidden text-ellipsis leading-tight"
-                              title={courseData.location}
-                            >
+                            <p className="overflow-hidden wrap-break-words whitespace-pre-wrap leading-tight text-[10px] md:text-xs ">
                               {infoHidden ? '' : courseData.location}
                             </p>
                           </div>
@@ -156,7 +158,7 @@ export default function Timetable({ courses, timetableName }: TimetableProps) {
                     }
 
                     return (
-                      <td key={day} className="border-l border-r border-gray-300 h-2 md:h-3.5" />
+                      <td key={day} className="border-l border-r border-gray-300 h-2.5 md:h-3.5" />
                     );
                   })}
                 </tr>
