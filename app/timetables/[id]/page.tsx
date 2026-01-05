@@ -13,6 +13,7 @@ import { TimetableData } from '@/types/model';
 
 export default function TimetableDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const decodedId = decodeURIComponent(id);
   const router = useRouter();
 
   const [timetable, setTimetable] = useState<TimetableData | undefined>(undefined);
@@ -22,11 +23,11 @@ export default function TimetableDetailPage() {
 
   useEffect(() => {
     (async () => {
-      const tt = await getTimetable(id);
+      const tt = await getTimetable(decodedId);
       setTimetable(tt);
       setLoading(false);
     })();
-  }, [id, router]);
+  }, [decodedId, router]);
 
   const courseMap = useMemo(() => {
     if (!allCourses) return new Map<string, Course>();
@@ -65,7 +66,7 @@ export default function TimetableDetailPage() {
   if (!timetable)
     return (
       <div className="max-w-4xl mx-auto p-4 min-h-[80vh]">
-        <p className="text-red-500 text-xl">{id} 이름의 시간표를 찾을 수 없습니다.</p>
+        <p className="text-red-500 text-xl">{decodedId} 이름의 시간표를 찾을 수 없습니다.</p>
       </div>
     );
 

@@ -92,9 +92,10 @@ function buildCourses() {
   }
 
   const courses: Course[] = Array.from(courseMap.values());
+  const sortedCourses = courses.sort((a, b) => a.id.localeCompare(b.id));
   // 출력 디렉터리 보장
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(courses, null, 2), 'utf-8');
+  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(sortedCourses, null, 2), 'utf-8');
 
   console.log(`✅ build complete: ${courses.length} courses`);
   console.log(`➡️  output: ${OUTPUT_FILE}`);
