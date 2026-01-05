@@ -1,7 +1,7 @@
 'use client';
 
 import { Course } from '@/types/data';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { formatTime } from '@/lib/format-time';
 import {
@@ -22,27 +22,45 @@ interface Props {
 
 export default function CourseSearchModal({ allCourses, onSelect }: Props) {
   const [query, setQuery] = useState('');
+  const [open, setOpen] = useState(false);
 
-  const filtered = allCourses.filter(
-    c =>
-      c.sbjName.toLowerCase().includes(query.toLowerCase()) ||
-      c.instructor.toLowerCase().includes(query.toLowerCase()) ||
-      c.id.toLowerCase().includes(query.toLowerCase()),
-  );
+  const filtered =
+    query !== ''
+      ? allCourses.filter(
+          c =>
+            c.sbjName.toLowerCase().includes(query.toLowerCase()) ||
+            c.instructor.toLowerCase().includes(query.toLowerCase()) ||
+            c.id.toLowerCase().includes(query.toLowerCase()),
+        )
+      : allCourses;
 
-  const parentRef = useRef<HTMLUListElement>(null);
+  const parentRef = useRef<HTMLDivElement>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: filtered.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 80, // 각 item 높이 추정값 (px)
+    estimateSize: () => 90, // 각 item 높이 추정값 (px)
     overscan: 10,
   });
+
+  useEffect(() => {
+    if (!open) return;
+
+    const id = requestAnimationFrame(() => {
+      rowVirtualizer.measure();
+    });
+
+    return () => cancelAnimationFrame(id);
+  }, [open, rowVirtualizer]);
+
+  useEffect(() => {
+    rowVirtualizer.measure();
+  }, [filtered.length, rowVirtualizer]);
 
   if (!allCourses) return null;
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="w-full md:w-1/2 bg-orange-500 hover:bg-orange-600">과목 추가</Button>
       </DialogTrigger>
@@ -59,8 +77,8 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
           className="mt-4"
         />
 
-        <ul ref={parentRef} className="relative h-[60vh] md:h-[70vh] overflow-auto">
-          <div style={{ height: rowVirtualizer.getTotalSize(), position: 'relative' }}>
+        <div ref={parentRef} className="relative h-[60vh] md:h-[70vh] overflow-auto">
+          <ul style={{ height: rowVirtualizer.getTotalSize(), position: 'relative' }}>
             {rowVirtualizer.getVirtualItems().map(virtualRow => {
               const course = filtered[virtualRow.index];
 
@@ -93,8 +111,8 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
                 </li>
               );
             })}
-          </div>
-        </ul>
+          </ul>
+        </div>
       </DialogContent>
     </Dialog>
   );
