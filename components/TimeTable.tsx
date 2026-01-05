@@ -103,7 +103,10 @@ export default function Timetable({ courses, timetableName }: TimetableProps) {
               const isHalfHour = intervalMinutes % 30 === 0;
 
               return (
-                <tr key={rowIdx} className={isHalfHour ? 'border-t border-gray-300' : ''}>
+                <tr
+                  key={rowIdx}
+                  className={`${isHalfHour ? 'border-t border-gray-300' : ''} h-2 md:h-3.5`}
+                >
                   {/* 시간 컬럼 */}
                   {isHourTop && (
                     <td
@@ -136,22 +139,25 @@ export default function Timetable({ courses, timetableName }: TimetableProps) {
                             courseData.id,
                           )}`}
                         >
-                          <h3 className="font-bold text-xs md:text-sm">
-                            {infoHidden ? '' : courseData.sbjName}
-                          </h3>
-                          <p className="font-bold">{infoHidden ? '' : courseData.instructor}</p>
-                          <p
-                            style={{ maxHeight: `${rowspan * 24 - 8}px` }}
-                            className="whitespace-pre-wrap warp-break-words overflow-auto"
-                            title={courseData.location}
-                          >
-                            {infoHidden ? '' : courseData.location}
-                          </p>
+                          <div className="h-full overflow-hidden flex flex-col">
+                            <h3 className="font-bold text-xs md:text-sm leading-tight shrink-0">
+                              {infoHidden ? '' : courseData.sbjName}
+                            </h3>
+
+                            <p
+                              className="flex-1 whitespace-pre-wrap wrap-break-word overflow-hidden text-ellipsis leading-tight"
+                              title={courseData.location}
+                            >
+                              {infoHidden ? '' : courseData.location}
+                            </p>
+                          </div>
                         </td>
                       );
                     }
 
-                    return <td key={day} className="border-l border-r border-gray-300 h-3.5" />;
+                    return (
+                      <td key={day} className="border-l border-r border-gray-300 h-2 md:h-3.5" />
+                    );
                   })}
                 </tr>
               );
