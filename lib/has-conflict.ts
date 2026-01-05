@@ -1,4 +1,4 @@
-import { Schedule } from "@/types/data";
+import { Schedule } from '@/types/data';
 
 export function hasConflict(a: Schedule[], b: Schedule[]): boolean {
   for (const slotA of a) {
@@ -22,7 +22,6 @@ export function hasAnyConflict(courses: Schedule[][]): boolean {
   }
   return false;
 }
-
 
 /** 예시 테스트 */
 const slotsA: Schedule[] = [

@@ -1,30 +1,13 @@
-import { Course, Schedule, DayOfWeek } from "@/types/data";
-
-export type RawCourseItem = {
-  SBJ_NO: string,
-  SBJ_NM: string,
-  CPDIV_CD: string | null,
-  DNN_CD: string | null,
-  ALL_FULL_PCNT: number | null,
-  SBJ_DIV: string | null,
-  OPEN_SEM_CD: string | null,
-  TMTBL_DSC: string | null,
-  DETL_CURI_CD: string | null,
-  OPEN_DPTMJR_CD_NM: string | null,
-  CDT: string | null,
-  OPEN_ORGN_CLSF_CD: string | null,
-  ROOM_DSC: string | null,
-  OPEN_YY: string | null,
-  SCHGRD: string | null,
-  REMK: string | null,
-  OPEN_DPTMJR_CD: string | null,
-  TCHR_DSC: string | null,
-  DVCLS: string | null,
-  TKCRS_PCNT: number,
-};
+import { Course, Schedule, DayOfWeek } from '@/types/data';
+import { RawClassTimetable, RawCourseItem } from '@/types/raw-data';
 
 const dayMap: Record<string, DayOfWeek> = {
-  월: '월', 화: '화', 수: '수', 목: '목', 금: '금', 토: '토'
+  월: '월',
+  화: '화',
+  수: '수',
+  목: '목',
+  금: '금',
+  토: '토',
 };
 
 function toMinutes(timeStr: string): number {
@@ -37,14 +20,18 @@ function parseSchedule(timetable: string): Schedule[] {
   if (!timetable) return schedules;
 
   // 시간 구간이 포함된 패턴 전체 추출
-  const pattern = /((?:[월화수목금토],?\s*)+)\s*(\d+(?:\.\d+)?)교시\((\d{1,2}:\d{2})\)\s*~\s*(\d+(?:\.\d+)?)교시\((\d{1,2}:\d{2})\)/g;
+  const pattern =
+    /((?:[월화수목금토],?\s*)+)\s*(\d+(?:\.\d+)?)교시\((\d{1,2}:\d{2})\)\s*~\s*(\d+(?:\.\d+)?)교시\((\d{1,2}:\d{2})\)/g;
   const matches = [...timetable.matchAll(pattern)];
 
   for (const match of matches) {
     const [, dayStr, periodStart, startTime, periodEnd, endTime] = match;
 
     // 쉼표로 나눠 복수 요일 추출
-    const days = dayStr.split(/,\s*/).map(d => d.trim()).filter(Boolean);
+    const days = dayStr
+      .split(/,\s*/)
+      .map(d => d.trim())
+      .filter(Boolean);
 
     for (const day of days) {
       const dayOfWeek = dayMap[day];
@@ -63,6 +50,67 @@ function parseSchedule(timetable: string): Schedule[] {
   return schedules;
 }
 
+function parseDCS(dsc: string): Schedule[] {
+  if (!dsc) return [];
+
+  /**
+   * 월 10:00-12:00
+   * 월요일 10:00-12:00
+   */
+  const pattern = /(월|화|수|목|금|토)(?:요일)?[^0-9]*(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/g;
+
+  const schedules: Schedule[] = [];
+  const matches = [...dsc.matchAll(pattern)];
+
+  for (const match of matches) {
+    const [, day, start, end] = match;
+
+    schedules.push({
+      day: day as DayOfWeek,
+      startMinutes: toMinutes(start),
+      endMinutes: toMinutes(end),
+    });
+  }
+
+  return schedules;
+}
+
+interface CourseAdapter<T> {
+  toCourse(raw: T): Course;
+}
+
+const RawCourseItemAdapter: CourseAdapter<RawCourseItem> = {
+  toCourse(raw) {
+    return {
+      id: `${raw.SBJ_NO}-${raw.DVCLS}`,
+      sbjNo: raw.SBJ_NO,
+      sbjName: raw.SBJ_NM,
+      instructor: raw.TCHR_DSC || '',
+      location: raw.ROOM_DSC || '',
+      timeSlots: parseSchedule(raw.TMTBL_DSC ?? ''),
+      fullParticipant: raw.ALL_FULL_PCNT ?? undefined,
+      currentParticipant: raw.TKCRS_PCNT ?? undefined,
+      memo: raw.REMK || null,
+    };
+  },
+};
+
+const ClassTimetableAdapter: CourseAdapter<RawClassTimetable> = {
+  toCourse(raw) {
+    return {
+      id: `${raw.SBJ_NO}-${raw.DVCLS}`,
+      sbjNo: raw.SBJ_NO,
+      sbjName: raw.SBJ_NM,
+      instructor: raw.PROF_KOR_DSC || '',
+      location: raw.ROOM_NM,
+      timeSlots: parseDCS(raw.DSC),
+      fullParticipant: raw.ALL_FULL_PCNT ?? undefined,
+      currentParticipant: raw.TKCRS_PCNT ?? undefined,
+      memo: raw.REMK_DSC || null,
+    };
+  },
+};
+
 export function parseRawCourse(raw: RawCourseItem): Course {
   return {
     id: `${raw.SBJ_NO}-${raw.DVCLS}`,
@@ -70,21 +118,22 @@ export function parseRawCourse(raw: RawCourseItem): Course {
     sbjName: raw.SBJ_NM,
     instructor: raw.TCHR_DSC || '',
     location: raw.ROOM_DSC || '',
-    timeSlots: parseSchedule(raw.TMTBL_DSC ?? "") || [],
+    timeSlots: parseSchedule(raw.TMTBL_DSC ?? ''),
     fullParticipant: raw.ALL_FULL_PCNT ?? undefined,
     currentParticipant: raw.TKCRS_PCNT ?? undefined,
+    memo: raw.REMK || null,
   };
 }
 
-// 테스트 케이스
-// const testCases: string[] = [
-//   "화, 목 7교시(15:00) ~ 8교시(16:30)",
-//   "월 4교시(12:00) ~ 5교시(13:30), 수 3교시(11:00) ~ 4교시(12:30)",
-//   "월 3교시(11:00) ~ 4.5교시(13:00), 월 5.5교시(13:30) ~ 6.5교시(15:00), 수 4.5교시(12:30) ~ 5.5교시(14:00)"
-// ];
+type AnyRaw = RawCourseItem | RawClassTimetable;
 
-// testCases.forEach((input, idx) => {
-//   const result = parseSchedule(input);
-//   console.log(`\n[CASE ${idx + 1}] "${input}"`);
-//   console.dir(result, { depth: null });
-// });
+function isRawClassTimetable(raw: AnyRaw): raw is RawClassTimetable {
+  return 'PROF_KOR_DSC' in raw && 'DSC' in raw;
+}
+
+export function mapToCourse(raw: AnyRaw): Course {
+  if (isRawClassTimetable(raw)) {
+    return ClassTimetableAdapter.toCourse(raw);
+  }
+  return RawCourseItemAdapter.toCourse(raw);
+}

@@ -1,12 +1,11 @@
-import { Course } from "@/types/data";
-import { GroupData, TimetableData } from "@/types/model";
-
-const DB_NAME = "TimetableDB";
-const DB_VERSION = 2;
-const GROUP_STORE = "groups";
-const TIMETABLE_STORE = "timetables";
-const MY_COURSE_COMPETITION_STORE = "myCourseCompetition";
-
+import { GroupData, TimetableData } from '@/types/model';
+import {
+  DB_NAME,
+  DB_VERSION,
+  GROUP_STORE,
+  TIMETABLE_STORE,
+  MY_COURSE_COMPETITION_STORE,
+} from '@/constants/storage';
 
 let db: IDBDatabase | null = null;
 
@@ -22,17 +21,17 @@ function openDB(): Promise<IDBDatabase> {
       resolve(db);
     };
 
-    request.onupgradeneeded = (event) => {
+    request.onupgradeneeded = event => {
       const database = (event.target as IDBOpenDBRequest).result;
 
       if (!database.objectStoreNames.contains(GROUP_STORE)) {
-        database.createObjectStore(GROUP_STORE, { keyPath: "id" });
+        database.createObjectStore(GROUP_STORE, { keyPath: 'id' });
       }
       if (!database.objectStoreNames.contains(TIMETABLE_STORE)) {
-        database.createObjectStore(TIMETABLE_STORE, { keyPath: "id" });
+        database.createObjectStore(TIMETABLE_STORE, { keyPath: 'id' });
       }
       if (!database.objectStoreNames.contains(MY_COURSE_COMPETITION_STORE)) {
-        database.createObjectStore(MY_COURSE_COMPETITION_STORE, { keyPath: "id" });
+        database.createObjectStore(MY_COURSE_COMPETITION_STORE, { keyPath: 'id' });
       }
     };
   });
@@ -41,7 +40,7 @@ function openDB(): Promise<IDBDatabase> {
 export async function addGroup(group: GroupData): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(GROUP_STORE, "readwrite");
+    const tx = database.transaction(GROUP_STORE, 'readwrite');
     const store = tx.objectStore(GROUP_STORE);
     const request = store.add(group);
 
@@ -53,7 +52,7 @@ export async function addGroup(group: GroupData): Promise<void> {
 export async function getGroup(id: string): Promise<GroupData | undefined> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(GROUP_STORE, "readonly");
+    const tx = database.transaction(GROUP_STORE, 'readonly');
     const store = tx.objectStore(GROUP_STORE);
     const request = store.get(id);
 
@@ -65,7 +64,7 @@ export async function getGroup(id: string): Promise<GroupData | undefined> {
 export async function getAllGroups(): Promise<GroupData[]> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(GROUP_STORE, "readonly");
+    const tx = database.transaction(GROUP_STORE, 'readonly');
     const store = tx.objectStore(GROUP_STORE);
     const request = store.getAll();
 
@@ -77,7 +76,7 @@ export async function getAllGroups(): Promise<GroupData[]> {
 export async function updateGroup(group: GroupData): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(GROUP_STORE, "readwrite");
+    const tx = database.transaction(GROUP_STORE, 'readwrite');
     const store = tx.objectStore(GROUP_STORE);
     const request = store.put(group);
 
@@ -89,7 +88,7 @@ export async function updateGroup(group: GroupData): Promise<void> {
 export async function deleteGroup(id: string): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(GROUP_STORE, "readwrite");
+    const tx = database.transaction(GROUP_STORE, 'readwrite');
     const store = tx.objectStore(GROUP_STORE);
     const request = store.delete(id);
 
@@ -98,11 +97,10 @@ export async function deleteGroup(id: string): Promise<void> {
   });
 }
 
-
 export async function addTimetable(timetable: TimetableData): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(TIMETABLE_STORE, "readwrite");
+    const tx = database.transaction(TIMETABLE_STORE, 'readwrite');
     const store = tx.objectStore(TIMETABLE_STORE);
     const request = store.add(timetable);
 
@@ -114,7 +112,7 @@ export async function addTimetable(timetable: TimetableData): Promise<void> {
 export async function getTimetable(id: string): Promise<TimetableData | undefined> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(TIMETABLE_STORE, "readonly");
+    const tx = database.transaction(TIMETABLE_STORE, 'readonly');
     const store = tx.objectStore(TIMETABLE_STORE);
     const request = store.get(id);
 
@@ -126,7 +124,7 @@ export async function getTimetable(id: string): Promise<TimetableData | undefine
 export async function getAllTimetables(): Promise<TimetableData[]> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(TIMETABLE_STORE, "readonly");
+    const tx = database.transaction(TIMETABLE_STORE, 'readonly');
     const store = tx.objectStore(TIMETABLE_STORE);
     const request = store.getAll();
 
@@ -138,7 +136,7 @@ export async function getAllTimetables(): Promise<TimetableData[]> {
 export async function updateTimetable(timetable: TimetableData): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(TIMETABLE_STORE, "readwrite");
+    const tx = database.transaction(TIMETABLE_STORE, 'readwrite');
     const store = tx.objectStore(TIMETABLE_STORE);
     const request = store.put(timetable);
 
@@ -150,7 +148,7 @@ export async function updateTimetable(timetable: TimetableData): Promise<void> {
 export async function deleteTimetable(id: string): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(TIMETABLE_STORE, "readwrite");
+    const tx = database.transaction(TIMETABLE_STORE, 'readwrite');
     const store = tx.objectStore(TIMETABLE_STORE);
     const request = store.delete(id);
 
@@ -159,25 +157,25 @@ export async function deleteTimetable(id: string): Promise<void> {
   });
 }
 
-export async function getAllMyCourses(): Promise<Course[]> {
+export async function getAllMyCourses(): Promise<string[]> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(MY_COURSE_COMPETITION_STORE, "readonly");
+    const tx = database.transaction(MY_COURSE_COMPETITION_STORE, 'readonly');
     const store = tx.objectStore(MY_COURSE_COMPETITION_STORE);
     const request = store.getAll();
 
-    request.onsuccess = () => resolve(request.result);
+    request.onsuccess = () => resolve(request.result as string[]);
     request.onerror = () => reject(request.error);
   });
 }
 
-export async function saveMyCourse(course: Course): Promise<void> {
+export async function saveMyCourse(id: string): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(MY_COURSE_COMPETITION_STORE, "readwrite");
+    const tx = database.transaction(MY_COURSE_COMPETITION_STORE, 'readwrite');
     const store = tx.objectStore(MY_COURSE_COMPETITION_STORE);
-    const request = store.put(course);
 
+    const request = store.put(id, id);
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
@@ -186,7 +184,7 @@ export async function saveMyCourse(course: Course): Promise<void> {
 export async function deleteMyCourse(id: string): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = database.transaction(MY_COURSE_COMPETITION_STORE, "readwrite");
+    const tx = database.transaction(MY_COURSE_COMPETITION_STORE, 'readwrite');
     const store = tx.objectStore(MY_COURSE_COMPETITION_STORE);
     const request = store.delete(id);
 

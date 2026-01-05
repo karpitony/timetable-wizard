@@ -1,10 +1,10 @@
-import { Schedule } from "@/types/data";
+import { Schedule } from '@/types/data';
 
 type Timetable = Schedule[][]; // 여러 과목의 시간 배열 모음
 
 export function scoreTimetable(timetable: Timetable): number {
   // 1. 공강 체크
-  const allDays = ['월','화','수','목','금','토'];
+  const allDays = ['월', '화', '수', '목', '금', '토'];
   const daysWithClass = new Set<string>();
   timetable.forEach(courseSlots => {
     courseSlots.forEach(slot => daysWithClass.add(slot.day));
@@ -13,7 +13,7 @@ export function scoreTimetable(timetable: Timetable): number {
   let score = freeDays.length * 5;
 
   // 2. 수업 시작/종료 시간 범위 계산
-  let earliestStart = 24*60;
+  let earliestStart = 24 * 60;
   let latestEnd = 0;
   let continuousPenalty = 0;
 
@@ -27,14 +27,14 @@ export function scoreTimetable(timetable: Timetable): number {
   });
 
   for (const slots of dayMap.values()) {
-    slots.sort((a,b) => a.startMinutes - b.startMinutes);
+    slots.sort((a, b) => a.startMinutes - b.startMinutes);
 
     earliestStart = Math.min(earliestStart, slots[0].startMinutes);
-    latestEnd = Math.max(latestEnd, slots[slots.length-1].endMinutes);
+    latestEnd = Math.max(latestEnd, slots[slots.length - 1].endMinutes);
 
     // 연강 체크
-    for(let i=0; i<slots.length-1; i++) {
-      if (slots[i].endMinutes === slots[i+1].startMinutes) continuousPenalty += 2;
+    for (let i = 0; i < slots.length - 1; i++) {
+      if (slots[i].endMinutes === slots[i + 1].startMinutes) continuousPenalty += 2;
     }
   }
 
@@ -42,10 +42,10 @@ export function scoreTimetable(timetable: Timetable): number {
   score -= continuousPenalty;
 
   // 4) 시작 시간 늦으면 가산점
-  score += Math.floor((earliestStart - 8*60)/30);
+  score += Math.floor((earliestStart - 8 * 60) / 30);
 
   // 5) 종료 시간 빨리 끝나면 가산점
-  score += Math.floor((18*60 - latestEnd)/30);
+  score += Math.floor((18 * 60 - latestEnd) / 30);
 
   return score;
 }

@@ -1,0 +1,24 @@
+{
+  "dsMain": [
+    {
+      "LEC_CHAIR": null,
+      "CURI_CD_NM": "석박사통합과정",
+      "SBJ_NO": "RSM7021",
+      "SBJ_NM": "디지털헬스의료기기개발및평가기술특론",
+      "REMK_DSC": null,
+      "TKCRS_PCNT1": 0,
+      "ALL_FULL_PCNT": 0,
+      "TKCRS_PCNT2": 0,
+      "ROOM_NM": "604(학생회관 409-607 아리랑)",
+      "DEPT_NM": "바이오헬스의료기기규제과학과",
+      "ROOM_CD": "SC0409FL06007",
+      "CDT": "3.0",
+      "DSC": "03-03~06-15 목 18:50-21:30",
+      "OBJ_SCHGRD_NM": "전체학기",
+      "PROF_KOR_DSC": null,
+      "BD_CD": "SC0409",
+      "DVCLS": "01",
+      "TKCRS_PCNT": 0
+    }
+  ]
+}

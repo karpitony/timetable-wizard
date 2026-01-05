@@ -23,10 +23,11 @@ interface Props {
 export default function CourseSearchModal({ allCourses, onSelect }: Props) {
   const [query, setQuery] = useState('');
 
-  const filtered = allCourses.filter((c) =>
-    c.sbjName.toLowerCase().includes(query.toLowerCase()) ||
-    c.instructor.toLowerCase().includes(query.toLowerCase()) ||
-    c.id.toLowerCase().includes(query.toLowerCase())
+  const filtered = allCourses.filter(
+    c =>
+      c.sbjName.toLowerCase().includes(query.toLowerCase()) ||
+      c.instructor.toLowerCase().includes(query.toLowerCase()) ||
+      c.id.toLowerCase().includes(query.toLowerCase()),
   );
 
   const parentRef = useRef<HTMLUListElement>(null);
@@ -38,12 +39,12 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
     overscan: 10,
   });
 
+  if (!allCourses) return null;
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full md:w-1/2 bg-orange-500 hover:bg-orange-600">
-          과목 추가
-        </Button>
+        <Button className="w-full md:w-1/2 bg-orange-500 hover:bg-orange-600">과목 추가</Button>
       </DialogTrigger>
       <DialogContent className="overflow-auto">
         <DialogHeader>
@@ -54,16 +55,13 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
         <Input
           placeholder="과목명, 교수명, 학수번호로 검색"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={e => setQuery(e.target.value)}
           className="mt-4"
         />
 
-        <ul
-          ref={parentRef}
-          className="relative h-[50vh] md:h-[70vh] overflow-auto"
-        >
+        <ul ref={parentRef} className="relative h-[60vh] md:h-[70vh] overflow-auto">
           <div style={{ height: rowVirtualizer.getTotalSize(), position: 'relative' }}>
-            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            {rowVirtualizer.getVirtualItems().map(virtualRow => {
               const course = filtered[virtualRow.index];
 
               return (
@@ -77,17 +75,20 @@ export default function CourseSearchModal({ allCourses, onSelect }: Props) {
                     height: `${virtualRow.size}px`,
                   }}
                 >
-                  <div className="font-medium">
+                  <div className="font-medium text-sm md:text-base">
                     {course.sbjName} ({course.id})
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs md:text-sm text-muted-foreground">
                     {course.instructor} |{' '}
                     {course.timeSlots
                       .map(
-                        (slot) =>
-                          `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`
+                        slot =>
+                          `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`,
                       )
                       .join(', ')}
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground mt-1">
+                    {course.memo || '-'}
                   </div>
                 </li>
               );

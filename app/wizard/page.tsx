@@ -1,15 +1,15 @@
 'use client';
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import GroupBox from "@/components/Wizard/GroupBox";
-import { GroupData } from '@/types/group';
-import { Course } from '@/types/data';
-import { 
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import GroupBox from '@/components/Wizard/GroupBox';
+import { GroupData } from '@/types/model';
+import {
   addGroup as addGroupToDB,
   updateGroup as updateGroupInDB,
   deleteGroup as deleteGroupFromDB,
-  getAllGroups 
-} from "@/lib/indexed-db-model";
+  getAllGroups,
+} from '@/lib/indexed-db-model';
+import { LAST_UPDATE, LAST_UPDATE_STRING } from '@/constants/storage';
 
 const Wizard = () => {
   const [groups, setGroups] = useState<GroupData[]>([]);
@@ -23,34 +23,53 @@ const Wizard = () => {
   }, []);
 
   const addGroup = async () => {
-    const newId = Date.now().toString();
     const newGroup: GroupData = {
-      id: newId,
-      data: [], // 빈 과목 배열로 시작
+      id: Date.now().toString(),
+      updatedAt: LAST_UPDATE_STRING,
+      data: [],
     };
 
-    setGroups([...groups, newGroup]);
+    setGroups(prev => [...prev, newGroup]);
     await addGroupToDB(newGroup);
   };
 
-  const updateGroupCourses = (groupId: string, newCourses: Course[]) => {
-    setGroups(prev => prev.map(g => g.id === groupId ? { ...g, data: newCourses } : g));
-    updateGroupInDB({ id: groupId, data: newCourses });
+  const updateGroupCourses = (groupId: string, lectureKeys: string[]) => {
+    setGroups(prev =>
+      prev.map(g =>
+        g.id === groupId ? { ...g, data: lectureKeys, updatedAt: LAST_UPDATE_STRING } : g,
+      ),
+    );
+
+    updateGroupInDB({
+      id: groupId,
+      data: lectureKeys,
+      updatedAt: LAST_UPDATE_STRING,
+    });
   };
 
   const removeGroup = async (groupId: string) => {
-    if (confirm("정말로 그룹을 삭제하시겠습니까?")) {
-      setGroups(groups.filter((group) => group.id !== groupId));
+    if (confirm('정말로 그룹을 삭제하시겠습니까?')) {
+      setGroups(groups.filter(group => group.id !== groupId));
       await deleteGroupFromDB(groupId);
     }
   };
+
+  const lastUpdateStr = LAST_UPDATE.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
   return (
     <section className="p-4 min-h-screen max-w-3xl mx-auto">
       <h2 className="text-3xl font-bold">시간표 마법사</h2>
       <p className="mt-2 text-lg">
-        여러 개의 그룹을 만들어 각 그룹에 과목을 추가하세요. 각 그룹에서 하나의 수업을 골라 시간표를 생성합니다.
+        여러 개의 그룹을 만들어 각 그룹에 과목을 추가하세요. 각 그룹에서 하나의 수업을 골라 시간표를
+        생성합니다.
       </p>
+      <p className="mt-2">마지막 업데이트: {lastUpdateStr}</p>
 
       <div className="w-full mt-10">
         {groups.map((group, index) => (

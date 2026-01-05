@@ -1,0 +1,24 @@
+{
+  "dsMain": [
+    {
+      "LEC_CHAIR": null,
+      "CURI_CD_NM": "석사과정",
+      "SBJ_NO": "ORI6034",
+      "SBJ_NM": "약정특론(1)",
+      "REMK_DSC": "팀티칭",
+      "TKCRS_PCNT1": 0,
+      "ALL_FULL_PCNT": 0,
+      "TKCRS_PCNT2": 0,
+      "ROOM_NM": "(산학협력관 및 강의동 1101-643 일산 한의과대학 도서관)",
+      "DEPT_NM": "한의학과",
+      "ROOM_CD": "IC1101FL06043",
+      "CDT": "3.0",
+      "DSC": "03-03~06-15 화 18:00-20:30",
+      "OBJ_SCHGRD_NM": "전체학기",
+      "PROF_KOR_DSC": "박선동, 김영우",
+      "BD_CD": "IC1101",
+      "DVCLS": "01",
+      "TKCRS_PCNT": 0
+    }
+  ]
+}

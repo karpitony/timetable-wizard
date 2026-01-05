@@ -1,31 +1,34 @@
 'use client';
 
-import { useState } from "react";
-import { addTimetable } from "@/lib/indexed-db-model";
-import { Course } from "@/types/data";
+import { useState } from 'react';
+import { addTimetable } from '@/lib/indexed-db-model';
+import { Course } from '@/types/data';
+import { LAST_UPDATE_STRING } from '@/constants/storage';
 
 interface TimetableWithSaveProps {
   courses: Course[];
+  timetableName: string;
 }
 
-export default function TimetableWithSave({ courses }: TimetableWithSaveProps) {
+export default function TimetableWithSave({ courses, timetableName }: TimetableWithSaveProps) {
   const [saving, setSaving] = useState(false);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(timetableName);
   const [showInput, setShowInput] = useState(false);
 
   const handleSave = async () => {
     if (!name.trim()) {
-      alert("시간표 이름을 입력해주세요.");
+      alert('시간표 이름을 입력해주세요.');
       return;
     }
     setSaving(true);
     try {
-      await addTimetable({ id: name.trim(), data: courses });
+      const keys = courses.map(c => c.id);
+      await addTimetable({ id: name.trim(), updatedAt: LAST_UPDATE_STRING, data: keys });
       alert(`"${name}" 시간표가 저장되었습니다.`);
-      setName("");
-      setShowInput(false);  // 저장 완료 후 입력창 숨기기
+      setName('');
+      setShowInput(false); // 저장 완료 후 입력창 숨기기
     } catch (e) {
-      alert("저장 실패!");
+      alert('저장 실패!');
       console.error(e);
     } finally {
       setSaving(false);
@@ -48,22 +51,18 @@ export default function TimetableWithSave({ courses }: TimetableWithSaveProps) {
             className="border px-2 py-1 rounded text-sm"
             placeholder="시간표 이름"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={e => setName(e.target.value)}
             disabled={saving}
             autoFocus
           />
-          <button
-            className="btn btn-primary"
-            onClick={handleSave}
-            disabled={saving}
-          >
-            {saving ? "저장 중..." : "확인"}
+          <button className="btn btn-primary" onClick={handleSave} disabled={saving}>
+            {saving ? '저장 중...' : '확인'}
           </button>
           <button
             className="btn btn-secondary"
             onClick={() => {
               setShowInput(false);
-              setName("");
+              setName('');
             }}
             disabled={saving}
           >

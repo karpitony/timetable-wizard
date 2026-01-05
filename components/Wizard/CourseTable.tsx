@@ -4,7 +4,7 @@ import {
   TableRow,
   TableHead,
   TableBody,
-  TableCell 
+  TableCell,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Course } from '@/types/data';
@@ -12,7 +12,7 @@ import { formatTime } from '@/lib/format-time';
 
 interface CourseTableProps {
   courses: Course[];
-  buttonType: "remove" | "add";
+  buttonType: 'remove' | 'add';
   removeCourse?: (courseId: string) => void;
   addCourse?: (course: Course) => void;
   isCompetitionEnabled?: boolean;
@@ -20,10 +20,10 @@ interface CourseTableProps {
 
 export default function CourseTable({
   courses,
-  buttonType = "remove",
+  buttonType = 'remove',
   removeCourse,
   addCourse,
-  isCompetitionEnabled = false
+  isCompetitionEnabled = false,
 }: CourseTableProps) {
   return (
     <Table>
@@ -31,47 +31,52 @@ export default function CourseTable({
         <TableRow>
           <TableHead>학수번호</TableHead>
           <TableHead>과목명</TableHead>
-          <TableHead className="w-[80px]">교수명</TableHead>
+          <TableHead className="w-20">교수명</TableHead>
           <TableHead>시간</TableHead>
-          {!isCompetitionEnabled && 
-            <TableHead className="hidden md:table-cell">장소</TableHead>
-          }
+          {!isCompetitionEnabled && <TableHead className="hidden md:table-cell">장소</TableHead>}
           {isCompetitionEnabled && (
             <>
-              <TableHead className="w-[60px] text-center">신청자 수</TableHead>
-              <TableHead className="w-[60px] text-center">정원</TableHead>
-              <TableHead className="w-[60px] text-center">경쟁률</TableHead>
+              <TableHead className="w-15 text-center">신청자 수</TableHead>
+              <TableHead className="w-15 text-center">정원</TableHead>
+              <TableHead className="w-15 text-center">경쟁률</TableHead>
             </>
           )}
-          {buttonType === "remove" && <TableHead className="w-[60px] text-center">삭제</TableHead>}
-          {buttonType === "add" && <TableHead className="w-[60px] text-center">추가</TableHead>}
+          {buttonType === 'remove' && <TableHead className="w-15 text-center">삭제</TableHead>}
+          {buttonType === 'add' && <TableHead className="w-15 text-center">추가</TableHead>}
         </TableRow>
       </TableHeader>
       <TableBody>
-        {courses.map((course) => (
+        {courses.map(course => (
           <TableRow key={course.id}>
             <TableCell>{course.id}</TableCell>
-            <TableCell className='whitespace-pre-wrap'>{course.sbjName}</TableCell>
+            <TableCell className="whitespace-pre-wrap">{course.sbjName}</TableCell>
             <TableCell>{course.instructor}</TableCell>
-            <TableCell className='whitespace-pre-wrap'>
-              {course.timeSlots.map(slot =>
-                `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`
-              ).join(", ")}
+            <TableCell className="whitespace-pre-wrap">
+              {course.timeSlots
+                .map(
+                  slot =>
+                    `${slot.day} ${formatTime(slot.startMinutes)}~${formatTime(slot.endMinutes)}`,
+                )
+                .join(', ')}
             </TableCell>
-            {!isCompetitionEnabled && 
-              <TableCell className="hidden md:table-cell whitespace-pre-wrap">{course.location}</TableCell>
-            }
+            {!isCompetitionEnabled && (
+              <TableCell className="hidden md:table-cell whitespace-pre-wrap">
+                {course.location}
+              </TableCell>
+            )}
             {isCompetitionEnabled && (
               <>
-                <TableHead className="w-[60px] text-center">{course.currentParticipant}</TableHead>
-                <TableHead className="w-[60px] text-center">{course.fullParticipant}</TableHead>
-                <TableHead className="w-[60px] text-center">
-                  {(course.fullParticipant && course.currentParticipant) ? (course.currentParticipant / course.fullParticipant).toFixed(2) : "error"}
+                <TableHead className="w-15 text-center">{course.currentParticipant}</TableHead>
+                <TableHead className="w-15 text-center">{course.fullParticipant}</TableHead>
+                <TableHead className="w-15 text-center">
+                  {course.fullParticipant && course.currentParticipant
+                    ? (course.currentParticipant / course.fullParticipant).toFixed(2)
+                    : 'error'}
                 </TableHead>
               </>
             )}
             <TableCell className="text-center">
-              {buttonType === "remove" ? (
+              {buttonType === 'remove' ? (
                 <Button
                   variant="ghost"
                   size="icon"
