@@ -29,7 +29,7 @@ export default function Home() {
       <Card className="w-full max-w-4xl shadow-xl">
         <CardContent className="p-1 md:p-6">
           <h2 className="text-xl font-semibold mb-4 pl-4 md:pl-0">미리보기</h2>
-          <Timetable courses={dummyCourses} />
+          <Timetable courses={dummyCourses} timetableName="미리보기" />
         </CardContent>
       </Card>
     </div>

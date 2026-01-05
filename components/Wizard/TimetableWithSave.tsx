@@ -7,11 +7,12 @@ import { LAST_UPDATE_STRING } from '@/constants/storage';
 
 interface TimetableWithSaveProps {
   courses: Course[];
+  timetableName: string;
 }
 
-export default function TimetableWithSave({ courses }: TimetableWithSaveProps) {
+export default function TimetableWithSave({ courses, timetableName }: TimetableWithSaveProps) {
   const [saving, setSaving] = useState(false);
-  const [name, setName] = useState('');
+  const [name, setName] = useState(timetableName);
   const [showInput, setShowInput] = useState(false);
 
   const handleSave = async () => {

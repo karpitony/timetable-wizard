@@ -71,7 +71,10 @@ export default function ResultPage() {
               <h3 className="text-xl font-semibold mb-2">
                 시간표 {page * PAGE_SIZE + idx + 1} (점수: {result.score})
               </h3>
-              <Timetable courses={result.timetable} />
+              <Timetable
+                courses={result.timetable}
+                timetableName={`시간표 ${page * PAGE_SIZE + idx + 1}  (점수: ${result.score})`}
+              />
             </div>
           ))}
 

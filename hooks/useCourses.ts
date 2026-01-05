@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Course } from '@/types/data';
-import { CACHE_KEY, CACHE_TTL, CACHE_VERSION } from '@/constants/storage';
+import { CACHE_KEY, CACHE_TTL } from '@/constants/storage';
 
 type CachedCourses = {
   timestamp: number;

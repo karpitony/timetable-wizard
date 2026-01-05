@@ -164,18 +164,18 @@ export async function getAllMyCourses(): Promise<string[]> {
     const store = tx.objectStore(MY_COURSE_COMPETITION_STORE);
     const request = store.getAll();
 
-    request.onsuccess = () => resolve(request.result);
+    request.onsuccess = () => resolve(request.result as string[]);
     request.onerror = () => reject(request.error);
   });
 }
 
-export async function saveMyCourse(course: string): Promise<void> {
+export async function saveMyCourse(id: string): Promise<void> {
   const database = await openDB();
   return new Promise((resolve, reject) => {
     const tx = database.transaction(MY_COURSE_COMPETITION_STORE, 'readwrite');
     const store = tx.objectStore(MY_COURSE_COMPETITION_STORE);
-    const request = store.put(course);
 
+    const request = store.put(id, id);
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
