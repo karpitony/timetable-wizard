@@ -2,7 +2,7 @@ function dateFromKST(y: number, m: number, d: number, h = 0, min = 0, s = 0) {
   return new Date(Date.UTC(y, m - 1, d, h - 9, min, s));
 }
 
-export const LAST_UPDATE = dateFromKST(2026, 1, 11, 21, 44, 0); // 2026년 1월 11일 21시 44분 KST
+export const LAST_UPDATE = dateFromKST(2026, 1, 13, 12, 9, 0); // 2026년 1월 13일 12시 09분 KST
 export const LAST_UPDATE_STRING: string = LAST_UPDATE.toISOString();
 
 // parsedData.json 캐싱 관련 상수

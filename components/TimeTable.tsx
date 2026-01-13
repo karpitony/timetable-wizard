@@ -149,7 +149,11 @@ export default function Timetable({ courses, timetableName }: TimetableProps) {
                               {infoHidden ? '' : courseData.sbjName}
                             </h3>
 
-                            <p className="overflow-hidden wrap-break-words whitespace-pre-wrap leading-tight text-[10px] md:text-xs ">
+                            <p className="overflow-hidden wrap-break-words whitespace-pre-wrap leading-tight text-[10px] md:text-xs font-semibold">
+                              {infoHidden ? '' : courseData.instructor}
+                            </p>
+
+                            <p className="overflow-hidden wrap-break-words whitespace-pre-wrap leading-tight text-[10px] md:text-xs">
                               {infoHidden ? '' : courseData.location}
                             </p>
                           </div>

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import rawJson from '../public/rawData_2025_2.json' assert { type: 'json' };
+import rawJson from '../public/rawData_2026_1.json' assert { type: 'json' };
 import { Course } from '../types/data';
 import { parseRawCourse } from '@/lib/Parser';
 import { RawCourseItem } from '@/types/raw-data';
