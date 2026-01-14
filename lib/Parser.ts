@@ -85,12 +85,12 @@ const RawCourseItemAdapter: CourseAdapter<RawCourseItem> = {
       id: `${raw.SBJ_NO}-${raw.DVCLS}`,
       sbjNo: raw.SBJ_NO,
       sbjName: raw.SBJ_NM,
-      instructor: raw.TCHR_DSC || '',
-      location: raw.ROOM_DSC || '',
-      timeSlots: parseSchedule(raw.TMTBL_DSC ?? ''),
-      fullParticipant: raw.ALL_FULL_PCNT ?? undefined,
+      instructor: raw.PROF_KOR_DSC || '',
+      location: raw.ROOM_KOR_DSC || '',
+      timeSlots: parseSchedule(raw.TMTBL_KOR_DSC ?? ''),
+      fullParticipant: raw.MNCLS_ALL_FULL_PCNT ?? undefined,
       currentParticipant: raw.TKCRS_PCNT ?? undefined,
-      memo: raw.REMK || null,
+      memo: raw.REMK_DSC || null,
     };
   },
 };
@@ -110,20 +110,6 @@ const ClassTimetableAdapter: CourseAdapter<RawClassTimetable> = {
     };
   },
 };
-
-export function parseRawCourse(raw: RawCourseItem): Course {
-  return {
-    id: `${raw.SBJ_NO}-${raw.DVCLS}`,
-    sbjNo: raw.SBJ_NO,
-    sbjName: raw.SBJ_NM,
-    instructor: raw.TCHR_DSC || '',
-    location: raw.ROOM_DSC || '',
-    timeSlots: parseSchedule(raw.TMTBL_DSC ?? ''),
-    fullParticipant: raw.ALL_FULL_PCNT ?? undefined,
-    currentParticipant: raw.TKCRS_PCNT ?? undefined,
-    memo: raw.REMK || null,
-  };
-}
 
 type AnyRaw = RawCourseItem | RawClassTimetable;
 
